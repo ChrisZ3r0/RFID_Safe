@@ -7,17 +7,18 @@ password = ""
 EMAIL_SENDER_ID = ""
 target_email = ""
 EMAIL_HEADER = "Security Alert"
-EMAIL_SUBJECT = "Security Camera Activated"
-EMAIL_MESSAGE_TIME_SUBSTRING = "The Security Camera Activated at time: "
-EMAIL_MESSAGE_LOCATION_SUBSTRING = "The Security Camera Activated at location: "
+EMAIL_SUBJECT = "Safe Login"
+EMAIL_MESSAGE_TIME_SUBSTRING = "The Safe got logged into at time: "
 
 
 def sendAnAlertEmail(timeOfActivation):
 	emailToSend = EmailMessage()
+
 	emailToSend["From"] = EMAIL_SENDER_ID
 	emailToSend["To"] = target_email
 	emailToSend["Header"] = EMAIL_HEADER
 	emailToSend["Subject"] = EMAIL_SUBJECT
+
 	emailMessage = EMAIL_MESSAGE_TIME_SUBSTRING + timeOfActivation
 	emailToSend.set_content(emailMessage)
 
