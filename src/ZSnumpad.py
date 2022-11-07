@@ -1,4 +1,3 @@
-from machine import Pin
 from time import sleep
 
 # SOURCE: https://www.youtube.com/watch?v=EpvVYyKwfjs
