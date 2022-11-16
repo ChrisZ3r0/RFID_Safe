@@ -92,9 +92,7 @@ def pinIsValid(pin):
     with open("/home/chris/RFID_Safe/src/password/pwd.txt", "r") as f:
         password = f.readline()
     
-    if password == pin:
-        return True
-    return False
+    return password == pin
 
 
 if __name__ == "__main__":
