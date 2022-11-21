@@ -13,7 +13,7 @@ if __name__ == '__main__':
     while digit == None:
         digit = kp.getKey()
     # Print result
-    print digit
+    print(digit)
     time.sleep(0.5)
  
     ###### 4 Digit wait ######
@@ -28,4 +28,4 @@ if __name__ == '__main__':
     # Check digit code
     print(seq)
     if seq == [1, 2, 3, '#']:
-        print "Code accepted"
+        print("Code accepted")
