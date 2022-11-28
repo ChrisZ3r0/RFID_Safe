@@ -47,8 +47,7 @@ def main():
                 numOrCharacterGot = readLine(L3, ["7", "8", "9", "C"])
             if not numOrCharacterGot: 
                 numOrCharacterGot = readLine(L4, ["*", "0", "#", "D"])
-            
-            
+
             pinBefore += numOrCharacterGot
             print(pinBefore)
             if numOrCharacterGot and len(pinBefore) == 4:
@@ -69,16 +68,12 @@ def main():
 def readLine(line, characters):
     GPIO.output(line, GPIO.HIGH)
     if GPIO.input(C1):
-        # print(characters[0])
         return characters[0]
     if GPIO.input(C2):
-        # print(characters[1])
         return characters[1]
     if GPIO.input(C3):
-        # print(characters[2])
         return characters[2]
     if GPIO.input(C4):
-        # print(characters[3])
         return characters[3]
     GPIO.output(line, GPIO.LOW)
 
