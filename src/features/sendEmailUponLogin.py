@@ -2,24 +2,31 @@ from email.message import EmailMessage
 import smtplib
 import ssl
 
+# TODO osztályba felszervezni mindent,
+#  különszedni a sendalert emalit configra, és küldésre
+#  és lehessen inicializálni az adatokkal küldés előtt,
+#  pl jelszó + felhaszn
 sender_email = ""
 password = ""
 EMAIL_SENDER_ID = ""
 target_email = ""
 EMAIL_HEADER = "Security Alert"
 EMAIL_SUBJECT = "Safe Login"
-EMAIL_MESSAGE_TIME_SUBSTRING = "The Safe got logged into at time: "
+EMAIL_MESSAGE_VALID = "The Safe got logged into at time: "
+EMAIL_MESSAGE_NOT_VALID = "Someone tried to log in at time: "
 
 
-def sendAnAlertEmail(timeOfActivation):
+def sendAnAlertEmail(timeOfActivation, valid):
 	emailToSend = EmailMessage()
 
 	emailToSend["From"] = EMAIL_SENDER_ID
 	emailToSend["To"] = target_email
 	emailToSend["Header"] = EMAIL_HEADER
 	emailToSend["Subject"] = EMAIL_SUBJECT
-
-	emailMessage = EMAIL_MESSAGE_TIME_SUBSTRING + timeOfActivation
+	if valid:
+		emailMessage = EMAIL_MESSAGE_VALID + timeOfActivation
+	else:
+		emailMessage = EMAIL_MESSAGE_NOT_VALID + timeOfActivation
 	emailToSend.set_content(emailMessage)
 
 	SMTP_SERVER = "smtp.gmail.com"
