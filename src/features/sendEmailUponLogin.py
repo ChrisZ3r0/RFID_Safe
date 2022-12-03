@@ -18,6 +18,7 @@ class EmailSender:
 		self.EMAIL_SUBJECT = "Attempted Safe Login"
 		self.EMAIL_MESSAGE_VALID = "The Safe got logged into at time: "
 		self.EMAIL_MESSAGE_NOT_VALID = "Someone tried to log in at time: "
+		self.EMAIL_MESSAGE_ADMIN = "Admin login at time: "
 
 	def setUpAlertEmailForValidLogin(self, timeOfActivation):
 		self.emailToSend["From"] = self.EMAIL_SENDER_ID
@@ -33,6 +34,14 @@ class EmailSender:
 		self.emailToSend["Header"] = self.EMAIL_HEADER
 		self.emailToSend["Subject"] = self.EMAIL_SUBJECT
 		emailMessage = self.EMAIL_MESSAGE_NOT_VALID + timeOfActivation
+		self.emailToSend.set_content(emailMessage)
+
+	def setUpAlertEmailForAdminLogin(self, timeOfActivation):
+		self.emailToSend["From"] = self.EMAIL_SENDER_ID
+		self.emailToSend["To"] = self.targetEmail
+		self.emailToSend["Header"] = self.EMAIL_HEADER
+		self.emailToSend["Subject"] = self.EMAIL_SUBJECT
+		emailMessage = self.EMAIL_MESSAGE_ADMIN + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 
 	def sendAnAlertEmail(self):

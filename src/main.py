@@ -63,6 +63,7 @@ class PiGpio:
     def setGpioModeToBcm():
         GPIO.setmode(GPIO.BCM)
 
+    # noinspection PyTypeChecker
     def readNumpadInput(self):
         character = self.readLine(self.L1, ["1", "2", "3", "A"])
         if not character:
@@ -110,6 +111,8 @@ class Rfid:
 class Safe:
     def __init__(self):
         self.isOpen = False
+        self.admin_mode = "AAAA"
+        self.admin_password = "0000"
 
     def getIsOpen(self) -> bool:
         return self.isOpen
@@ -136,12 +139,21 @@ class Safe:
         return password == pin
 
 
-# noinspection PyTypeChecker
+class Logger:
+    def __init__(self, path="/home/chris/RFID_Safe/src/login/login.csv"):
+        self.path = path
+
+    def logAttemptedLogin(self, timeOfLogin, valid : int):
+        with open(self.path, "a") as f:
+            f.write(timeOfLogin + "," + str(valid) + "\n")
+
+
 def main():
-    gpio = PiGpio(GPIO.PWM(12, 50))
+    gpio = PiGpio(GPIO.PWM(12, 50)) # 12  -> ??
     safe = Safe()
     email = EmailSender("myEmail@gmail.com", "myPassword", "targetEmail@gamil.com", "My Name")
     rfid = Rfid(SimpleMFRC522())
+    logger = Logger()
     try:
         inputPin = ""
         while True:
@@ -152,18 +164,26 @@ def main():
 
             inputPin += characterGot
             if characterGot and len(inputPin) == 4:
-                if inputPin == "AAAA": # Admin password
+                loginTime = getDateAndTimeFormatted()
+                if inputPin == safe.admin_mode:
                     print("Touch your RFID")
-                    rfid.readText()
+                    if rfid.readText() == safe.admin_password:
+                        print("Admin login")
+                        logger.logAttemptedLogin(loginTime, 1)
+                        gpio.setHighState()
+                        email.setUpAlertEmailForAdminLogin(loginTime)
+                        # email.sendAnAlertEmail()
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
+                    logger.logAttemptedLogin(loginTime, 1)
                     gpio.setHighState()
-                    email.setUpAlertEmailForValidLogin(getDateAndTimeFormatted())
+                    email.setUpAlertEmailForValidLogin(loginTime)
                     # email.sendAnAlertEmail()
                 else:
                     print("Pin is not valid")
+                    logger.logAttemptedLogin(loginTime, 0)
                     gpio.setNeutralState()
-                    email.setUpAlertEmailForNotValidLogin(getDateAndTimeFormatted())
+                    email.setUpAlertEmailForNotValidLogin(loginTime)
                     # email.sendAnAlertEmail()
                 inputPin = ""
             else:
