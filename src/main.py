@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from gpiozero import Buzzer
+from mfrc522 import SimpleMFRC522
 import time
 from features.sendEmailUponLogin import EmailSender
 from features.getDate import getDateAndTimeFormatted
@@ -92,6 +93,20 @@ class PiGpio:
         GPIO.cleanup()
 
 
+class Rfid:
+    def __init__(self, reader):
+        self.reader = reader
+
+    def readId(self):
+        return self.reader.read()[0]
+
+    def readText(self):
+        return self.reader.read()[1]
+
+    def setText(self, text):
+        self.reader.write(text)
+
+
 class Safe:
     def __init__(self):
         self.isOpen = False
@@ -126,6 +141,7 @@ def main():
     gpio = PiGpio(GPIO.PWM(12, 50))
     safe = Safe()
     email = EmailSender("myEmail@gmail.com", "myPassword", "targetEmail@gamil.com", "My Name")
+    rfid = Rfid(SimpleMFRC522())
     try:
         inputPin = ""
         while True:
@@ -136,25 +152,28 @@ def main():
 
             inputPin += characterGot
             if characterGot and len(inputPin) == 4:
-                if safe.pinIsValid(inputPin):
+                if inputPin == "AAAA": # Admin password
+                    print("Touch your RFID")
+                    rfid.readText()
+                elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     gpio.setHighState()
-                    # email.setUpAlertEmailForValidLogin(getDateAndTimeFormatted())
+                    email.setUpAlertEmailForValidLogin(getDateAndTimeFormatted())
                     # email.sendAnAlertEmail()
-                    inputPin = ""
                 else:
                     print("Pin is not valid")
                     gpio.setNeutralState()
-                    # email.setUpAlertEmailForNotValidLogin(getDateAndTimeFormatted()
+                    email.setUpAlertEmailForNotValidLogin(getDateAndTimeFormatted())
                     # email.sendAnAlertEmail()
-                    inputPin = ""
+                inputPin = ""
             else:
                 time.sleep(0.1)
             if characterGot:
                 time.sleep(0.5)
     except KeyboardInterrupt:
-        gpio.gpioCleanup()
         print("\nApplication stopped!")
+    finally:
+        gpio.gpioCleanup()
 
 
 if __name__ == "__main__":
