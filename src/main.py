@@ -51,9 +51,11 @@ class PiGpio:
 
     def startBuzzer(self):
         self.buzzer.on()
+        time.sleep(0.5)
 
     def stopBuzzer(self):
         self.buzzer.off()
+        time.sleep(0.5)
 
     @staticmethod
     def setGpioModeToBoard():
@@ -173,6 +175,9 @@ def main():
                         gpio.setHighState()
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         # email.sendAnAlertEmail()
+                    else:
+                        gpio.startBuzzer()
+                        gpio.stopBuzzer()
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
@@ -181,6 +186,8 @@ def main():
                     # email.sendAnAlertEmail()
                 else:
                     print("Pin is not valid")
+                    gpio.startBuzzer()
+                    gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
                     gpio.setNeutralState()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
