@@ -13,34 +13,23 @@ class EmailSender:
 		self.SMTP_PORT = SMTP_PORT
 		self.context = ssl.create_default_context()
 		self.emailToSend = EmailMessage()
-		self.EMAIL_SENDER_ID = EMAIL_SENDER_ID
-		self.EMAIL_HEADER = "Security Alert"
-		self.EMAIL_SUBJECT = "Attempted Safe Login"
+		self.emailToSend["From"] = EMAIL_SENDER_ID
+		self.emailToSend["To"] = self.targetEmail
+		self.emailToSend["Header"] = "Security Alert"
+		self.emailToSend["Subject"] = "Attempted Safe Login"
 		self.EMAIL_MESSAGE_VALID = "The Safe got logged into at time: "
 		self.EMAIL_MESSAGE_NOT_VALID = "Someone tried to log in at time: "
 		self.EMAIL_MESSAGE_ADMIN = "Admin login at time: "
 
 	def setUpAlertEmailForValidLogin(self, timeOfActivation):
-		self.emailToSend["From"] = self.EMAIL_SENDER_ID
-		self.emailToSend["To"] = self.targetEmail
-		self.emailToSend["Header"] = self.EMAIL_HEADER
-		self.emailToSend["Subject"] = self.EMAIL_SUBJECT
 		emailMessage = self.EMAIL_MESSAGE_VALID + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 
 	def setUpAlertEmailForNotValidLogin(self, timeOfActivation):
-		self.emailToSend["From"] = self.EMAIL_SENDER_ID
-		self.emailToSend["To"] = self.targetEmail
-		self.emailToSend["Header"] = self.EMAIL_HEADER
-		self.emailToSend["Subject"] = self.EMAIL_SUBJECT
 		emailMessage = self.EMAIL_MESSAGE_NOT_VALID + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 
 	def setUpAlertEmailForAdminLogin(self, timeOfActivation):
-		self.emailToSend["From"] = self.EMAIL_SENDER_ID
-		self.emailToSend["To"] = self.targetEmail
-		self.emailToSend["Header"] = self.EMAIL_HEADER
-		self.emailToSend["Subject"] = self.EMAIL_SUBJECT
 		emailMessage = self.EMAIL_MESSAGE_ADMIN + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 
