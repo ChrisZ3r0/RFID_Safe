@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from gpiozero import Buzzer
 from mfrc522 import SimpleMFRC522
+from picamera2 import Picamera2
 import time
 from features.sendEmailUponLogin import EmailSender
 from features.getDate import getDateAndTimeFormatted
@@ -9,6 +10,7 @@ from features.Rfid import Rfid
 from features.Safe import Safe
 from features.Logger import Logger
 from features.Plotter import Plotter
+from features.Camera import Camera
 
 
 def main():
@@ -18,6 +20,8 @@ def main():
     rfid = Rfid(SimpleMFRC522())
     logger = Logger()
     plotter = Plotter()
+    camera = Camera(Picamera2())
+    camera.configureCamera()
     try:
         inputPin = ""
         while True:
@@ -29,6 +33,7 @@ def main():
             inputPin += characterGot
             if characterGot and len(inputPin) == 4:
                 loginTime = getDateAndTimeFormatted()
+                camera.captureImage(loginTime)
                 if inputPin == safe.admin_mode:
                     print("Touch your RFID")
                     if rfid.readText() == safe.admin_password:

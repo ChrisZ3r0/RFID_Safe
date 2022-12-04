@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class Plotter:
     def __init__(self, path="/home/chris/RFID_Safe/src/login/login.csv"):
         self.path = path
