@@ -14,7 +14,10 @@ from features.Camera import Camera
 
 
 def main():
-    gpio = PiGpio(GPIO.PWM(12, 50)) # 12  -> ??
+    PiGpio.setGpioModeToBoard()
+    GPIO.setup(12, GPIO.OUT)
+    gpio = PiGpio(GPIO.PWM(12, 50))
+    gpio.setupGpio()
     safe = Safe()
     email = EmailSender("myEmail@gmail.com", "myPassword", "targetEmail@gamil.com", "My Name")
     rfid = Rfid(SimpleMFRC522())
@@ -25,44 +28,48 @@ def main():
     try:
         inputPin = ""
         while True:
-            characterGot = ""
-
-            gpio.setGpioModeToBcm()
             characterGot = gpio.readNumpadInput()
-
             inputPin += characterGot
+            print(inputPin)
             if characterGot and len(inputPin) == 4:
                 loginTime = getDateAndTimeFormatted()
-                camera.captureImage(loginTime)
+
+                # camera.captureImage(loginTime)
                 if inputPin == safe.admin_mode:
                     print("Touch your RFID")
-                    if rfid.readText() == safe.admin_password:
+                    rfidText = rfid.readText()
+                    print(rfidText)
+                    if rfidText == safe.admin_password:
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        gpio.setHighState()
+                        # gpio.setHighState()
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         # email.sendAnAlertEmail()
                     else:
-                        gpio.startBuzzer()
-                        gpio.stopBuzzer()
+                        # gpio.startBuzzer()
+                        # gpio.stopBuzzer()
+                        pass
+
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
-                    gpio.setHighState()
+                    # gpio.setHighState()
                     email.setUpAlertEmailForValidLogin(loginTime)
                     # email.sendAnAlertEmail()
+
                 elif inputPin == safe.plotter_mode:
                     plotter.evaluateLoginData()
                     plotter.createAndShowDiagram()
                 else:
                     print("Pin is not valid")
-                    gpio.startBuzzer()
-                    gpio.stopBuzzer()
+                    # gpio.startBuzzer()
+                    # gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    gpio.setNeutralState()
+                    # gpio.setNeutralState()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     # email.sendAnAlertEmail()
                 inputPin = ""
+
             else:
                 time.sleep(0.1)
             if characterGot:

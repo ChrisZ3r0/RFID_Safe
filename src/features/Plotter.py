@@ -11,6 +11,9 @@ class Plotter:
 
     def evaluateLoginData(self):
         with open(self.path, "r") as file:
+            self.monthsLabels = []
+            self.validLogins = []
+            self.inValidLogins = []
             validCounter = 0
             inValidCounter = 0
             for line in file.readlines():
@@ -34,7 +37,7 @@ class Plotter:
 
     def formatLabels(self):
         for i, label in enumerate(self.monthsLabels.copy()):
-            self.monthsLabels.append(label[0] + ", " + label[1])
+            self.monthsLabels[i] = label[0] + ", " + label[1]
 
     def createAndShowDiagram(self):
         x = np.arange(len(self.monthsLabels))  # the label locations

@@ -5,21 +5,20 @@ import time
 
 
 class PiGpio:
-    def __init__(self, servo): # servo -> GPIO.PWM(12, 50) 12 helyett is másik
-        self.L1 = 25
-        self.L2 = 8
-        self.L3 = 7
-        self.L4 = 1
-        self.C1 = 12
-        self.C2 = 16
-        self.C3 = 20
-        self.C4 = 21
-        self.buzzer = Buzzer(23)
+    def __init__(self, servo):
+        self.L4 = 37
+        self.L2 = 33
+        self.L3 = 35
+        self.L1 = 31
+        self.C1 = 32
+        self.C2 = 36
+        self.C3 = 38
+        self.C4 = 40
+        # self.buzzer = Buzzer(23)C2
         self.servo = servo
 
     def setupGpio(self):
         GPIO.setwarnings(False)
-        # GPIO.setup(12, GPIO.OUT) --> Itt a 12-es helyett másikra kell tenni
         GPIO.setup(self.L1, GPIO.OUT)
         GPIO.setup(self.L2, GPIO.OUT)
         GPIO.setup(self.L3, GPIO.OUT)
@@ -36,11 +35,9 @@ class PiGpio:
         self.servo.stop()
 
     def setNeutralState(self):
-        self.setGpioModeToBoard()
         self.servo.ChangeDutyCycle(0)
 
     def setHighState(self):
-        self.setGpioModeToBoard()
         duty = 0
         while duty <= 15:  # 90 / 6 degree => 15 rotations
             self.servo.ChangeDutyCycle(duty)
@@ -63,7 +60,6 @@ class PiGpio:
     def setGpioModeToBcm():
         GPIO.setmode(GPIO.BCM)
 
-    # noinspection PyTypeChecker
     def readNumpadInput(self):
         character = self.readLine(self.L1, ["1", "2", "3", "A"])
         if not character:
@@ -74,16 +70,15 @@ class PiGpio:
             character = self.readLine(self.L4, ["*", "0", "#", "D"])
         return character
 
-    @staticmethod
-    def readLine(line, characters):
+    def readLine(self, line, characters):
         GPIO.output(line, GPIO.HIGH)
-        if GPIO.input(line.C1):
+        if GPIO.input(self.C1):
             return characters[0]
-        if GPIO.input(line.C2):
+        if GPIO.input(self.C2):
             return characters[1]
-        if GPIO.input(line.C3):
+        if GPIO.input(self.C3):
             return characters[2]
-        if GPIO.input(line.C4):
+        if GPIO.input(self.C4):
             return characters[3]
         GPIO.output(line, GPIO.LOW)
 
