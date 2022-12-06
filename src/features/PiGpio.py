@@ -14,7 +14,7 @@ class PiGpio:
         self.C2 = 36
         self.C3 = 38
         self.C4 = 40
-        # self.buzzer = Buzzer(23)C2
+        self.buzzer = Buzzer(16)
         self.servo = servo
 
     def setupGpio(self):

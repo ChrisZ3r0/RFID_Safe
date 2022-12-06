@@ -13,7 +13,7 @@ class Camera:
 
 	def captureImage(self, timeOfPicture):
 		with self.camera as camera:
-			camera.capture_file(f"/Images/{timeOfPicture}.jpg")
+			camera.capture_file(f"/Images/{timeOfPicture}.jpg")	#nem kis images mappa??
 
 	"""
 	@staticmethod
