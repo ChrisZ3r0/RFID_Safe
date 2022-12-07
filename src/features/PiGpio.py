@@ -15,7 +15,7 @@ class PiGpio:
         self.C3 = 38
         self.C4 = 40
         self.buzzer = Buzzer(16)
-        self.servo = servo
+    #    self.servo = servo
 
     def setupGpio(self):
         GPIO.setwarnings(False)
