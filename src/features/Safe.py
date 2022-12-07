@@ -25,6 +25,7 @@ class Safe:
 
     @staticmethod
     def pinIsValid(pin : str):
+        print("Reading in")
         with open("/home/chris/RFID_Safe/src/password/pwd.txt", "r") as f:
             password = f.readline()
         return password == pin

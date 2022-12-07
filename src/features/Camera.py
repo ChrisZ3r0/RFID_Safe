@@ -10,15 +10,17 @@ class Camera:
 
 	def configureCamera(self):
 		self.camera.configure(self.config)
-
+	
 	def captureImage(self, timeOfPicture):
-		with self.camera as camera:
-			camera.capture_file(f"/Images/{timeOfPicture}.jpg")	#nem kis images mappa??
-
+		print("elso")
+		self.camera.start_and_capture_file(f"./media/chris/intenso/RFID_Safe/src/features/images{timeOfPicture}.jpg")()
+		print("capture elott")
+			#nem kis images mappa??
+		print("capture utan")
 	"""
 	@staticmethod
 	def captureImageV2(timeOfPicture):
-		os.system(f"/usr/bin/libcamera-still  --hf --vf -t 10000 -o ./images{timeOfPicture}.jpg")
+		os.system(f"/usr/bin/libcamera-still  --hf --vf -t 10000 -o ./media/chris/intenso/RFID_Safe/src/features/images{timeOfPicture}.jpg")
 	"""
 
 	def startPreview(self):
