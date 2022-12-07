@@ -13,7 +13,7 @@ class Camera:
 	
 	def captureImage(self, timeOfPicture):
 		print("elso")
-		self.camera.start_and_capture_file(f"./media/chris/intenso/RFID_Safe/src/features/images{timeOfPicture}.jpg")()
+		self.camera.start_and_capture_file(f"{timeOfPicture}.jpg")
 		print("capture elott")
 			#nem kis images mappa??
 		print("capture utan")
