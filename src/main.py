@@ -1,12 +1,10 @@
 import RPi.GPIO as GPIO
-from gpiozero import Buzzer
 from mfrc522 import SimpleMFRC522
 from picamera2 import Picamera2
 import time
 from features.sendEmailUponLogin import EmailSender
 from features.getDate import getDateAndTimeFormatted
 from features.PiGpio import PiGpio
-from features.Rfid import Rfid
 from features.Safe import Safe
 from features.Logger import Logger
 from features.Plotter import Plotter
