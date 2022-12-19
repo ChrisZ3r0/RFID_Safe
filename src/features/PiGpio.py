@@ -29,6 +29,7 @@ class PiGpio:
         GPIO.setup(self.C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.C4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.buzzer, GPIO.OUT)
         GPIO.setup(self.greenLed, GPIO.OUT)
         GPIO.setup(self.redLed, GPIO.OUT)
 
