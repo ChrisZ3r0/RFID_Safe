@@ -66,8 +66,8 @@ def main():
 
                 else:
                     print("Pin is not valid")
-                    # gpio.startBuzzer()
-                    # gpio.stopBuzzer()
+                    gpio.startBuzzer()
+                    gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
                     # gpio.setNeutralState()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
