@@ -14,7 +14,7 @@ class PiGpio:
         self.C2 = 36
         self.C3 = 38
         self.C4 = 40
-        self.led = ? # Led PIN-je
+        self.led = 11 # Led PIN-je
         self.buzzer = Buzzer(16)
         self.servo = servo
 
