@@ -31,8 +31,6 @@ def main():
             characterGot = gpio.readNumpadInput()
             inputPin += characterGot
             print(inputPin)
-            gpio.startLed()
-            gpio.stopLed()
             if characterGot and len(inputPin) == 4:
                 loginTime = getDateAndTimeFormatted()
 
@@ -59,6 +57,8 @@ def main():
                     # gpio.setHighState()
                     # email.setUpAlertEmailForValidLogin(loginTime)
                     # email.sendAnAlertEmail()
+                    gpio.startLed(1)
+                    gpio.stopLed(1)
 
                 elif inputPin == safe.plotter_mode:
                     plotter.evaluateLoginData()
@@ -72,6 +72,8 @@ def main():
                     # gpio.setNeutralState()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     # email.sendAnAlertEmail()
+                    gpio.startLed(0)
+                    gpio.stopLed(0)
                 inputPin = ""
 
             else:
