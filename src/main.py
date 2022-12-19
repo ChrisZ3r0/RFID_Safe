@@ -37,9 +37,8 @@ def main():
                 camera.captureImage(loginTime)
                 if inputPin == safe.admin_mode:
                     print("Touch your RFID")
-                    """
                     cardId, text = rfid.read()
-                    print(rfidText)
+                    print(text)
                     if text == safe.admin_password:
                         print("Admin login")
                         # logger.logAttemptedLogin(loginTime, 1)
@@ -50,7 +49,7 @@ def main():
                         # gpio.startBuzzer()
                         # gpio.stopBuzzer()
                         pass
-                    """
+
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     # logger.logAttemptedLogin(loginTime, 1)
