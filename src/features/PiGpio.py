@@ -14,7 +14,7 @@ class PiGpio:
         self.C2 = 36
         self.C3 = 38
         self.C4 = 40
-        self.led = ? # Led PIN-je
+        self.led = LED(?) # Led PIN-je
         self.buzzer = Buzzer(16)
         self.servo = servo
 
@@ -28,7 +28,6 @@ class PiGpio:
         GPIO.setup(self.C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.C4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(self.led, GPIO.OUT)
 
     def startServo(self):
         self.servo.start(0)
@@ -54,12 +53,11 @@ class PiGpio:
         self.buzzer.off()
 
     def startLed(self):
-        GPIO.output(self.led, GPIO.HIGH)
+        self.led.on()
         print("LED on")
-        time.sleep(1)
 
     def stopLed(self):
-        GPIO.output(self.led, GPIO.LOW)
+        self.led.off()
         print("LED off")
 
     @staticmethod
