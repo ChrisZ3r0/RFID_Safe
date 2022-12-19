@@ -14,7 +14,8 @@ class PiGpio:
         self.C2 = 36
         self.C3 = 38
         self.C4 = 40
-        self.led = 18 # Led PIN-je
+        self.greenLed = 18 # Led PIN-je
+        self.redLed = 11
         self.buzzer = Buzzer(16)
         self.servo = servo
 
@@ -28,7 +29,8 @@ class PiGpio:
         GPIO.setup(self.C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.C4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(self.led, GPIO.OUT)
+        GPIO.setup(self.greenLed, GPIO.OUT)
+        GPIO.setup(self.redLed, GPIO.OUT)
 
     def startServo(self):
         self.servo.start(0)
@@ -53,16 +55,18 @@ class PiGpio:
     def stopBuzzer(self):
         self.buzzer.off()
 
-    def startLed(self):
-        GPIO.output(self.led, GPIO.HIGH)
+    def startLed(self, isGreen):
+        if isGreen:
+            GPIO.output(self.greenLed, GPIO.HIGH)
+        else:
+            GPIO.output(self.redLed, GPIO.HIGH)
         time.sleep(1)
-        # self.led.on()
-        print("LED on")
 
-    def stopLed(self):
-        GPIO.output(self.led, GPIO.LOW)
-        # self.led.off()
-        print("LED off")
+    def stopLed(self, isGreen):
+        if isGreen:
+            GPIO.output(self.greenLed, GPIO.LOW)
+        else:
+            GPIO.output(self.redLed, GPIO.LOW)
 
     @staticmethod
     def setGpioModeToBoard():
