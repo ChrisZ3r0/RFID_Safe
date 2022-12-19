@@ -20,7 +20,7 @@ def main():
     gpio.setupGpio()
     safe = Safe()
     email = EmailSender("myEmail@gmail.com", "myPassword", "targetEmail@gamil.com", "My Name")
-    rfid = Rfid(SimpleMFRC522())
+    rfidReader = SimpleMFRC522()
     logger = Logger()
     plotter = Plotter()
     camera = Camera(Picamera2())
@@ -37,7 +37,7 @@ def main():
                 camera.captureImage(loginTime)
                 if inputPin == safe.admin_mode:
                     print("Touch your RFID")
-                    cardId, text = rfid.read()
+                    cardId, text = rfidReader.read()
                     print(text)
                     if text == safe.admin_password:
                         print("Admin login")
@@ -46,9 +46,8 @@ def main():
                         # email.setUpAlertEmailForAdminLogin(loginTime)
                         # email.sendAnAlertEmail()
                     else:
-                        # gpio.startBuzzer()
-                        # gpio.stopBuzzer()
-                        pass
+                        gpio.startBuzzer()
+                        gpio.stopBuzzer()
 
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")

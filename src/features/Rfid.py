@@ -3,7 +3,8 @@ class Rfid:
         self.reader = reader
 
     def read(self):
-        return self.reader.read()
+        cardId, text = self.reader.read()
+        return cardId, text
 
     def setText(self, text):
         self.reader.write(text)
