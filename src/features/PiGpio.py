@@ -1,6 +1,4 @@
 import RPi.GPIO as GPIO
-from gpiozero import Buzzer, LED
-from mfrc522 import SimpleMFRC522
 import time
 
 
@@ -16,7 +14,7 @@ class PiGpio:
         self.C4 = 40
         self.greenLed = 18 # Led PIN-je
         self.redLed = 11
-        self.buzzer = Buzzer(16)
+        self.buzzer = 16
         self.servo = servo
 
     def setupGpio(self):
@@ -50,11 +48,11 @@ class PiGpio:
             duty = duty + 1
 
     def startBuzzer(self):
-        self.buzzer.on()
-        time.sleep(0.5)
+        GPIO.output(self.buzzer, GPIO.HIGH)
+        time.sleep(1)
 
     def stopBuzzer(self):
-        self.buzzer.off()
+        GPIO.output(self.buzzer, GPIO.LOW)
 
     def startLed(self, isGreen):
         if isGreen:
