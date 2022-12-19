@@ -37,7 +37,6 @@ def main():
                 loginTime = getDateAndTimeFormatted()
 
                 camera.captureImage(loginTime)
-                print("red")
                 if inputPin == safe.admin_mode:
                     print("Touch your RFID")
                     """
