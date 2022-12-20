@@ -11,7 +11,7 @@ class Camera:
 	
 	def captureImage(self, timeOfPicture):
 		print("capture elott")
-		self.camera.start_and_capture_file(f"images/{timeOfPicture}.jpg")
+		self.camera.start_and_capture_file(f"/home/chris/RFID_Safe/src/images/{timeOfPicture}.jpg")
 		print("capture után")
 
 	def startPreview(self):
