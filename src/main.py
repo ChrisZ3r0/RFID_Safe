@@ -69,11 +69,7 @@ def main():
                         print(f"Starting {i}")
                         gpio.startBuzzer()
                         gpio.startLed(1)
-<<<<<<< HEAD
-                        print("did a thing")
-=======
                         print(f"Stopping {i}")
->>>>>>> 995015a82228954fedcfaad92efb9470a8af1f68
                         gpio.stopBuzzer()
                         gpio.stopLed(1)
 
