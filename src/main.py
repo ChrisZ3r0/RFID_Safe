@@ -68,6 +68,7 @@ def main():
                     for i in range(1, 4):
                         gpio.startBuzzer()
                         gpio.startLed(1)
+                        print("did a thing")
                         gpio.stopBuzzer()
                         gpio.stopLed(1)
 
