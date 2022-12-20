@@ -44,3 +44,5 @@ class EmailSender:
 			print("The email address / password is incorrect.")
 		except smtplib.SMTPException as error:
 			print(f"Error while establishing the connection {error}")
+		except Exception as e:
+			pass
