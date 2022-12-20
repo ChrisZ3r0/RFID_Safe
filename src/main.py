@@ -42,7 +42,9 @@ def main():
                     if text == safe.admin_password:
                         print("Admin login")
                         # logger.logAttemptedLogin(loginTime, 1)
-                        # gpio.setHighState()
+                        gpio.startServo()
+                        gpio.setHighState()
+                        gpio.stopServo()
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -52,7 +54,9 @@ def main():
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     # logger.logAttemptedLogin(loginTime, 1)
-                    # gpio.setHighState()
+                    gpio.startServo()
+                    gpio.setHighState()
+                    gpio.stopServo()
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     for i in range(1, 4):
@@ -71,7 +75,9 @@ def main():
                     time.sleep(0.5)
                     gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    # gpio.setNeutralState()
+                    gpio.startServo()
+                    gpio.setNeutralState()
+                    gpio.stopServo()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     gpio.startLed(0)
