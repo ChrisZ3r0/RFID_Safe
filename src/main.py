@@ -65,9 +65,11 @@ def main():
                         duty = duty + 1
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
-                    for i in range(1, 4):
+                    for i in range(3):
+                        print(f"Starting {i}")
                         gpio.startBuzzer()
                         gpio.startLed(1)
+                        print(f"Stopping {i}")
                         gpio.stopBuzzer()
                         gpio.stopLed(1)
 
