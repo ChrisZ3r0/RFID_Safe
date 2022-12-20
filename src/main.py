@@ -19,6 +19,7 @@ def main():
     gpio.setupGpio()
     GPIO.setup(12, GPIO.OUT)
     servo = GPIO.PWM(12, 50)
+    servo.start(0)
     safe = Safe()
     email = EmailSender("toreky.zsombor@gmail.com", "", "tore.plays01@gmail.com")
     rfidReader = SimpleMFRC522()
@@ -43,9 +44,7 @@ def main():
                     if text == safe.admin_password:
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        servo.start(0)
                         setHighState(servo)
-                        servo.stop()
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -55,9 +54,7 @@ def main():
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
-                    servo.start(0)
                     setHighState(servo)
-                    servo.stop()
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     for i in range(1, 4):
@@ -76,9 +73,7 @@ def main():
                     time.sleep(0.5)
                     gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    servo.start(0)
                     setNeutralState(servo)
-                    servo.stop()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     gpio.startLed(0)
@@ -92,6 +87,7 @@ def main():
     except KeyboardInterrupt:
         print("\nApplication stopped!")
     finally:
+        servo.stop()
         gpio.gpioCleanup()
 
 
