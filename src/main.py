@@ -55,8 +55,11 @@ def main():
                     # gpio.setHighState()
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
-                    gpio.startLed(1)
-                    gpio.stopLed(1)
+                    for i in range(1, 4):
+                        gpio.startBuzzer()
+                        gpio.startLed(1)
+                        gpio.stopBuzzer()
+                        gpio.stopLed(1)
 
                 elif inputPin == safe.plotter_mode:
                     plotter.evaluateLoginData()
