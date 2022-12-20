@@ -49,7 +49,6 @@ class PiGpio:
 
     def startBuzzer(self):
         GPIO.output(self.buzzer, GPIO.HIGH)
-        time.sleep(1)
 
     def stopBuzzer(self):
         GPIO.output(self.buzzer, GPIO.LOW)
