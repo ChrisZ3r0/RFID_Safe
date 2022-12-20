@@ -44,7 +44,11 @@ def main():
                     if text == safe.admin_password:
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        setHighState(servo)
+                        duty = 1
+                        while duty <= 15:  # 90 / 6 degree => 15 rotations
+                            servo.ChangeDutyCycle(duty)
+                            time.sleep(1)
+                            duty = duty + 1
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -54,7 +58,11 @@ def main():
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
-                    setHighState(servo)
+                    duty = 1
+                    while duty <= 15:  # 90 / 6 degree => 15 rotations
+                        servo.ChangeDutyCycle(duty)
+                        time.sleep(1)
+                        duty = duty + 1
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     for i in range(1, 4):
@@ -73,7 +81,7 @@ def main():
                     time.sleep(0.5)
                     gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    setNeutralState(servo)
+                    servo.ChangeDutyCycle(0)
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     gpio.startLed(0)
@@ -89,18 +97,6 @@ def main():
     finally:
         servo.stop()
         gpio.gpioCleanup()
-
-
-def setNeutralState(servo):
-    servo.ChangeDutyCycle(0)
-
-
-def setHighState(servo):
-    duty = 1
-    while duty <= 15:  # 90 / 6 degree => 15 rotations
-        servo.ChangeDutyCycle(duty)
-        time.sleep(1)
-        duty = duty + 1
 
 
 if __name__ == "__main__":
