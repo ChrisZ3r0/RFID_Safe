@@ -35,7 +35,7 @@ class PiGpio:
 
     def stopBuzzer(self):
         GPIO.output(self.buzzer, GPIO.LOW)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     def startLed(self, isGreen):
         if isGreen:
@@ -49,7 +49,7 @@ class PiGpio:
             GPIO.output(self.greenLed, GPIO.LOW)
         else:
             GPIO.output(self.redLed, GPIO.LOW)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     @staticmethod
     def setGpioModeToBoard():
