@@ -15,9 +15,10 @@ from features.Camera import Camera
 
 def main():
     PiGpio.setGpioModeToBoard()
-    GPIO.setup(12, GPIO.OUT)
-    gpio = PiGpio(GPIO.PWM(12, 50))
+    gpio = PiGpio()
     gpio.setupGpio()
+    GPIO.setup(12, GPIO.OUT)
+    servo = GPIO.PWM(12, 50)
     safe = Safe()
     email = EmailSender("toreky.zsombor@gmail.com", "", "tore.plays01@gmail.com")
     rfidReader = SimpleMFRC522()
@@ -41,10 +42,10 @@ def main():
                     print(text)
                     if text == safe.admin_password:
                         print("Admin login")
-                        # logger.logAttemptedLogin(loginTime, 1)
-                        gpio.startServo()
-                        gpio.setHighState()
-                        gpio.stopServo()
+                        logger.logAttemptedLogin(loginTime, 1)
+                        servo.start(0)
+                        setHighState(servo)
+                        servo.stop()
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -53,10 +54,10 @@ def main():
 
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
-                    # logger.logAttemptedLogin(loginTime, 1)
-                    gpio.startServo()
-                    gpio.setHighState()
-                    gpio.stopServo()
+                    logger.logAttemptedLogin(loginTime, 1)
+                    servo.start(0)
+                    setHighState(servo)
+                    servo.stop()
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     for i in range(1, 4):
@@ -75,9 +76,9 @@ def main():
                     time.sleep(0.5)
                     gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    gpio.startServo()
-                    gpio.setNeutralState()
-                    gpio.stopServo()
+                    servo.start(0)
+                    setNeutralState(servo)
+                    servo.stop()
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     gpio.startLed(0)
@@ -92,6 +93,18 @@ def main():
         print("\nApplication stopped!")
     finally:
         gpio.gpioCleanup()
+
+
+def setNeutralState(servo):
+    servo.ChangeDutyCycle(0)
+
+
+def setHighState(servo):
+    duty = 1
+    while duty <= 15:  # 90 / 6 degree => 15 rotations
+        servo.ChangeDutyCycle(duty)
+        time.sleep(1)
+        duty = duty + 1
 
 
 if __name__ == "__main__":

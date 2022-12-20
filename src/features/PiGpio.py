@@ -3,7 +3,7 @@ import time
 
 
 class PiGpio:
-    def __init__(self, servo):
+    def __init__(self):
         self.L4 = 37
         self.L2 = 33
         self.L3 = 35
@@ -15,7 +15,6 @@ class PiGpio:
         self.greenLed = 18 # Led PIN-je
         self.redLed = 11
         self.buzzer = 16
-        self.servo = servo
 
     def setupGpio(self):
         GPIO.setwarnings(False)
@@ -30,22 +29,6 @@ class PiGpio:
         GPIO.setup(self.buzzer, GPIO.OUT)
         GPIO.setup(self.greenLed, GPIO.OUT)
         GPIO.setup(self.redLed, GPIO.OUT)
-
-    def startServo(self):
-        self.servo.start(0)
-
-    def stopServo(self):
-        self.servo.stop()
-
-    def setNeutralState(self):
-        self.servo.ChangeDutyCycle(0)
-
-    def setHighState(self):
-        duty = 0
-        while duty <= 15:  # 90 / 6 degree => 15 rotations
-            self.servo.ChangeDutyCycle(duty)
-            time.sleep(1)
-            duty = duty + 1
 
     def startBuzzer(self):
         GPIO.output(self.buzzer, GPIO.HIGH)
