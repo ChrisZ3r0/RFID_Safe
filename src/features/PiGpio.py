@@ -42,7 +42,7 @@ class PiGpio:
             GPIO.output(self.greenLed, GPIO.HIGH)
         else:
             GPIO.output(self.redLed, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(0.1)
 
     def stopLed(self, isGreen):
         if isGreen:

@@ -68,10 +68,16 @@ def main():
                     for i in range(3):
                         print(f"Starting {i}")
                         gpio.startBuzzer()
-                        gpio.startLed(1)
+                        gpio.startLed(0.1)
                         print(f"Stopping {i}")
                         gpio.stopBuzzer()
-                        gpio.stopLed(1)
+                        gpio.stopLed(0.1)
+
+                    gpio.startBuzzer()
+                    gpio.startLed(0)
+                    time.sleep(0.5)
+                    gpio.stopBuzzer()
+                    gpio.stopLed(0)
 
                 elif inputPin == safe.plotter_mode:
                     plotter.evaluateLoginData()
