@@ -33,24 +33,25 @@ class Plotter:
 
             self.validLogins.append(validCounter)
             self.inValidLogins.append(inValidCounter)
-        self.formatLabels()
+        self._formatLabels()
 
-    def formatLabels(self):
+    def _formatLabels(self):
         for i, label in enumerate(self.monthsLabels.copy()):
             self.monthsLabels[i] = label[0] + ", " + label[1]
 
-    def createAndShowDiagram(self):
+    def createAndSaveDiagram(self, timeOfSaving):
         x = np.arange(len(self.monthsLabels))  # the label locations
         width = 0.2  # the width of the bars
         fig, ax = plt.subplots()
-        rectangle1 = ax.bar(x - width / 2, self.validLogins, width, label='Valid Logins')
-        rectangle2 = ax.bar(x + width / 2, self.inValidLogins, width, label='Invalid Logins')
+        rectangle1 = ax.bar(x - width / 2, self.validLogins, width, label="Valid Logins")
+        rectangle2 = ax.bar(x + width / 2, self.inValidLogins, width, label="Invalid Logins")
         # Add some text for labels, title and custom x-axis tick labels, etc.
-        ax.set_ylabel('Attempted Logins')
-        ax.set_title('Safe Login Visualization')
+        ax.set_ylabel("Attempted Logins")
+        ax.set_title("Safe Login Visualization")
         ax.set_xticks(x, self.monthsLabels)
         ax.legend()
         ax.bar_label(rectangle1, padding=3)
         ax.bar_label(rectangle2, padding=3)
         fig.tight_layout()
-        plt.show()
+
+        plt.savefig(f"/home/chris/RFID_Safe/src/diagrams/{timeOfSaving}.png")
