@@ -81,7 +81,9 @@ def main():
 
                 elif inputPin == safe.plotter_mode:
                     plotter.evaluateLoginData()
-                    # plotter.createAndShowDiagram()
+                    plotter.createAndSaveDiagram(loginTime)
+                    email.setUpAlertEmailForPlotter(loginTime)
+                    email.sendAnAlertEmail()
 
                 else:
                     print("Pin is not valid")
