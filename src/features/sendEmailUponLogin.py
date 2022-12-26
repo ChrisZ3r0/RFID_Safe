@@ -33,9 +33,9 @@ class EmailSender:
 	def setUpAlertEmailForPlotter(self, timeOfActivation):
 		emailMessage = self.EMAIL_MESSAGE_PLOTTER + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
-		with open(f"/home/chris/RFID_Safe/src/diagrams/{timeOfActivation}", "rb") as plot:
+		with open(f"/home/chris/RFID_Safe/src/diagrams/{timeOfActivation}.png", "rb") as plot:
 			imgData = plot.read()
-		self.emailToSend.add_attachment(imgData, maintype='image', subtype='png')
+			self.emailToSend.add_attachment(imgData, maintype='image', subtype='png')
 
 	def setUpAlertEmailForAdminLogin(self, timeOfActivation):
 		emailMessage = self.EMAIL_MESSAGE_ADMIN + timeOfActivation
