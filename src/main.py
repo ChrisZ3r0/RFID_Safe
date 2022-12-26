@@ -11,6 +11,7 @@ from features.Safe import Safe
 from features.Logger import Logger
 from features.Plotter import Plotter
 from features.Camera import Camera
+from features.appcode import *
 
 
 def main():
@@ -21,7 +22,7 @@ def main():
     servo = GPIO.PWM(12, 50)
     servo.start(0)
     safe = Safe()
-    email = EmailSender("toreky.zsombor@gmail.com", "", "tore.plays01@gmail.com")
+    email = EmailSender("toreky.zsombor@gmail.com", GMAIL_APP_CODE, "tore.plays01@gmail.com")
     rfidReader = SimpleMFRC522()
     logger = Logger()
     plotter = Plotter()
