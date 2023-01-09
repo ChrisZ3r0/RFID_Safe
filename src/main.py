@@ -26,7 +26,7 @@ def main():
     servo.start(0)
     safe = Safe()
     email = EmailSender(os.getenv("GMAIL_SENDER_ADDRESS"), os.getenv("GMAIL_APP_CODE"), os.getenv("GMAIL_SENDER_ADDRESS"))
-    rfidReader = SimpleMFRC522()
+    rfidReader = SimpleMFRC522() # Ennek nem lehetne PIN-t adni? Mert ha nem adsz, defaultra megy, és megtalálja, de itt nem?
     logger = Logger()
     plotter = Plotter()
     camera = Camera(Picamera2())
@@ -48,7 +48,7 @@ def main():
                     if text == safe.admin_password:
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        duty = 1
+                        duty = 8  # 8n a nyilt 14-15 aa zart
                         while duty <= 15:  # 90 / 6 degree => 15 rotations
                             servo.ChangeDutyCycle(duty)
                             time.sleep(1)
@@ -63,7 +63,7 @@ def main():
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
 
-                    duty = 8   #8n a nyilt 14-15 aa zart
+                    duty = 8   # 8n a nyilt 14-15 aa zart
                     while duty <= 15:  # 90 / 6 degree => 15 rotations
                         servo.ChangeDutyCycle(duty)
                         time.sleep(1)
