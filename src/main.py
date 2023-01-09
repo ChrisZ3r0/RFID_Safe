@@ -4,6 +4,7 @@ import os
 import time
 from dotenv import load_dotenv
 import RPi.GPIO as GPIO
+from gpiozero import AngularServo
 from mfrc522 import SimpleMFRC522
 from picamera2 import Picamera2
 from features.sendEmailUponLogin import EmailSender
@@ -21,9 +22,10 @@ def main():
     PiGpio.setGpioModeToBoard()
     gpio = PiGpio()
     gpio.setupGpio()
-    GPIO.setup(12, GPIO.OUT)
-    servo = GPIO.PWM(12, 50)
-    servo.start(50)
+    # GPIO.setup(12, GPIO.OUT)
+    # servo = GPIO.PWM(12, 50)
+    servo = AngularServo(12, min_pulse_width=0.0006, max_pulse_width=0.0023)
+    # servo.start(0)
     safe = Safe()
     email = EmailSender(os.getenv("GMAIL_SENDER_ADDRESS"), os.getenv("GMAIL_APP_CODE"), os.getenv("GMAIL_SENDER_ADDRESS"))
     rfidReader = SimpleMFRC522()
@@ -49,10 +51,10 @@ def main():
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
                         duty = 1
-                        while duty <= 15:  # 90 / 6 degree => 15 rotations
-                            servo.ChangeDutyCycle(duty)
-                            time.sleep(1)
-                            duty = duty + 1
+                        # while duty <= 15:  # 90 / 6 degree => 15 rotations
+                        #     servo.ChangeDutyCycle(duty)
+                        #     time.sleep(1)
+                        #     duty = duty + 1
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -62,14 +64,14 @@ def main():
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
-                    
-                    duty = 1
 
-                    servo.ChangeDutyCycle(2)
+                    servo.angle(5)
+                    time.sleep(2)
+                    servo.angle(-5)
                     # while duty <= 15:  # 90 / 6 degree => 15 rotations
-                    #    servo.ChangeDutyCycle(duty)
-                    #    time.sleep(1)
-                    #    duty = duty + 1
+                    #     servo.ChangeDutyCycle(duty)
+                    #     time.sleep(1)
+                    #     duty = duty + 1
 
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
