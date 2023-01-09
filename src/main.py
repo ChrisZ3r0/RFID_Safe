@@ -64,10 +64,12 @@ def main():
                     logger.logAttemptedLogin(loginTime, 1)
                     
                     duty = 1
-                    while duty <= 15:  # 90 / 6 degree => 15 rotations
-                        servo.ChangeDutyCycle(duty)
-                        time.sleep(1)
-                        duty = duty + 1
+
+                    servo.ChangeDutyCycle(2)
+                    # while duty <= 15:  # 90 / 6 degree => 15 rotations
+                    #    servo.ChangeDutyCycle(duty)
+                    #    time.sleep(1)
+                    #    duty = duty + 1
 
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
