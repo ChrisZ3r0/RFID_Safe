@@ -1,5 +1,3 @@
-from picamera2 import Preview
-from libcamera import Transform
 import time
 
 

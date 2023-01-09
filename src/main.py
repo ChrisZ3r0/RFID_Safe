@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
+import os
+import time
+from dotenv import load_dotenv
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 from picamera2 import Picamera2
-import time
 from features.sendEmailUponLogin import EmailSender
 from features.getDate import getDateAndTimeFormatted
 from features.PiGpio import PiGpio
@@ -11,10 +13,11 @@ from features.Safe import Safe
 from features.Logger import Logger
 from features.Plotter import Plotter
 from features.Camera import Camera
-from features.appcode import *
 
 
 def main():
+    load_dotenv()
+
     PiGpio.setGpioModeToBoard()
     gpio = PiGpio()
     gpio.setupGpio()
@@ -22,7 +25,7 @@ def main():
     servo = GPIO.PWM(12, 50)
     servo.start(0)
     safe = Safe()
-    email = EmailSender("toreky.zsombor@gmail.com", GMAIL_APP_CODE, "tore.plays01@gmail.com")
+    email = EmailSender("toreky.zsombor@gmail.com", os.getenv("GMAIL_APP_CODE"), "tore.plays01@gmail.com")
     rfidReader = SimpleMFRC522()
     logger = Logger()
     plotter = Plotter()
