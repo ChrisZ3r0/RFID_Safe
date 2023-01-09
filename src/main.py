@@ -63,7 +63,7 @@ def main():
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
 
-                    duty = 1
+                    duty = 8   #8n a nyilt 14-15 aa zart
                     while duty <= 15:  # 90 / 6 degree => 15 rotations
                         servo.ChangeDutyCycle(duty)
                         time.sleep(1)
