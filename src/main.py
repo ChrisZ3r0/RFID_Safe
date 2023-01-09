@@ -23,7 +23,7 @@ def main():
     gpio.setupGpio()
     GPIO.setup(12, GPIO.OUT)
     servo = GPIO.PWM(12, 50)
-    servo.start(0)
+    servo.start(50)
     safe = Safe()
     email = EmailSender(os.getenv("GMAIL_SENDER_ADDRESS"), os.getenv("GMAIL_APP_CODE"), os.getenv("GMAIL_SENDER_ADDRESS"))
     rfidReader = SimpleMFRC522()
