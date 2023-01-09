@@ -55,10 +55,6 @@ class PiGpio:
     def setGpioModeToBoard():
         GPIO.setmode(GPIO.BOARD)
 
-    @staticmethod
-    def setGpioModeToBcm():
-        GPIO.setmode(GPIO.BCM)
-
     def readNumpadInput(self):
         character = self.readLine(self.L1, ["1", "2", "3", "A"])
         if not character:
