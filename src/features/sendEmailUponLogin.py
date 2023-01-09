@@ -23,14 +23,17 @@ class EmailSender:
 		self.EMAIL_MESSAGE_PLOTTER = "Data evaluation has been sent in attachment!"
 
 	def setUpAlertEmailForValidLogin(self, timeOfActivation):
+		self.emailToSend = EmailMessage()
 		emailMessage = self.EMAIL_MESSAGE_VALID + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 
 	def setUpAlertEmailForNotValidLogin(self, timeOfActivation):
+		self.emailToSend = EmailMessage()
 		emailMessage = self.EMAIL_MESSAGE_NOT_VALID + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 
 	def setUpAlertEmailForPlotter(self, timeOfActivation):
+		self.emailToSend = EmailMessage()
 		emailMessage = self.EMAIL_MESSAGE_PLOTTER + timeOfActivation
 		self.emailToSend.set_content(emailMessage)
 		with open(f"/home/chris/RFID_Safe/src/diagrams/{timeOfActivation}.png", "rb") as plot:
