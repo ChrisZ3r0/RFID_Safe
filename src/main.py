@@ -25,7 +25,7 @@ def main():
     servo = GPIO.PWM(12, 50)
     servo.start(0)
     safe = Safe()
-    email = EmailSender("toreky.zsombor@gmail.com", os.getenv("GMAIL_APP_CODE"), "tore.plays01@gmail.com")
+    email = EmailSender(os.getenv("GMAIL_SENDER_ADDRESS"), os.getenv("GMAIL_APP_CODE"), os.getenv("GMAIL_SENDER_ADDRESS"))
     rfidReader = SimpleMFRC522()
     logger = Logger()
     plotter = Plotter()
@@ -68,8 +68,7 @@ def main():
                         servo.ChangeDutyCycle(duty)
                         time.sleep(1)
                         duty = duty + 1
-                    
-                    
+
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     for i in range(3):
