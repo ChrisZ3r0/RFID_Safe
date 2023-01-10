@@ -41,15 +41,30 @@ class Plotter:
 
     def createAndSaveDiagram(self, timeOfSaving):
         x = np.arange(len(self.monthsLabels))
-        width = 0.2
+        width = 0.35
         fig, ax = plt.subplots()
+        rects1 = ax.bar(x - width/2, self.validLogins, width, label="Valid Logins")
+        rects2 = ax.bar(x + width/2, self.inValidLogins, width, label="Invalid Logins")
+
+        # Add some text for labels, title and custom x-axis tick labels, etc.
         ax.set_ylabel("Attempted Logins")
         ax.set_title("Safe Login Visualization")
-        ax.set_xticks(x, self.monthsLabels)
+        ax.set_xticks(x)
+        ax.set_xticklabels(self.monthsLabels)
         ax.legend()
-        for i in range(len(self.monthsLabels)):
-            plt.text(i, self.validLogins[i], self.validLogins[i], ha="center", va="bottom")
-            plt.text(i, self.inValidLogins[i], self.inValidLogins[i], ha="center", va="bottom")
-        fig.tight_layout()
 
+        self.autolabel(rects1)
+        self.autolabel(rects2)
+
+        fig.tight_layout()
         plt.savefig(f"/home/chris/RFID_Safe/src/diagrams/{timeOfSaving}.png")
+
+    def autolabel(self, ax, rects):
+        """Attach a text label above each bar in *rects*, displaying its height."""
+        for rect in rects:
+            height = rect.get_height()
+            ax.annotate('{}'.format(height),
+                xy=(rect.get_x() + rect.get_width() / 2, height),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha='center', va='bottom')
