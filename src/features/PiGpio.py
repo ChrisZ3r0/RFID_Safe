@@ -8,7 +8,7 @@ class PiGpio:
         self.L2 = 33 #volt 33 as
         self.L3 = 35
         self.L1 = 31
-        self.C1 = 32
+        self.C1 = 29
         self.C2 = 36
         self.C3 = 38
         self.C4 = 40

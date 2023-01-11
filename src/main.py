@@ -22,11 +22,11 @@ def main():
     PiGpio.setGpioModeToBoard()
     gpio = PiGpio()
     gpio.setupGpio()
-    # GPIO.setup(12, GPIO.OUT) #volt 12 es
+    #GPIO.setup(12, GPIO.OUT) #volt 12 es
     # servo = GPIO.PWM(12, 50)# volt 12 es
     # servo.start(11)
 
-    servo = 12
+    servo = 18
     pwm = pigpio.pi()
     pwm.set_mode(servo, pigpio.OUTPUT)
     pwm.set_PWM_frequency(servo, 50)
@@ -77,17 +77,15 @@ def main():
                     # servo.ChangeDutyCycle(6)
                     # time.sleep(10)
                     # servo.ChangeDutyCycle(11)
-                    print( "0 deg" )
-                    pwm.set_servo_pulsewidth( servo, 500 ) ;
-                    time.sleep( 3 )
 
                     print( "90 deg" )
                     pwm.set_servo_pulsewidth( servo, 1500 ) ;
-                    time.sleep( 3 )
+                    time.sleep( 10 )
 
-                    print( "180 deg" )
-                    pwm.set_servo_pulsewidth( servo, 2500 ) ;
-                    time.sleep( 3 )
+
+                    print( "0 deg" )
+                    pwm.set_servo_pulsewidth( servo, 500 ) ;
+                    
 
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
