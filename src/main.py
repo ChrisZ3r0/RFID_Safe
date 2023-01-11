@@ -15,16 +15,12 @@ from features.Logger import Logger
 from features.Plotter import Plotter
 from features.Camera import Camera
 
-
 def main():
     load_dotenv()
 
     PiGpio.setGpioModeToBoard()
     gpio = PiGpio()
     gpio.setupGpio()
-    #GPIO.setup(12, GPIO.OUT) #volt 12 es
-    # servo = GPIO.PWM(12, 50)# volt 12 es
-    # servo.start(11)
 
     servo = 18
     pwm = pigpio.pi()
@@ -55,9 +51,7 @@ def main():
                     if cardId ==safe.admin_password: #changed to the card id, it is unique so it should be safe
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        # servo.ChangeDutyCycle(6)
                         time.sleep(10)
-                        # servo.ChangeDutyCycle(11)
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -74,19 +68,13 @@ def main():
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
 
-                    # servo.ChangeDutyCycle(6)
-                    # time.sleep(10)
-                    # servo.ChangeDutyCycle(11)
-
                     print( "90 deg" )
                     pwm.set_servo_pulsewidth( servo, 1500 ) ;
                     time.sleep( 10 )
 
-
                     print( "0 deg" )
                     pwm.set_servo_pulsewidth( servo, 500 ) ;
                     
-
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     for i in range(3):
@@ -115,8 +103,8 @@ def main():
                     time.sleep(0.5)
                     gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    # servo.ChangeDutyCycle(0)
                     email.setUpAlertEmailForNotValidLogin(loginTime)
+                    email.setUpAlertEmailForImage(loginTime)
                     email.sendAnAlertEmail()
                     gpio.startLed(0)
                     gpio.stopLed(0)
@@ -131,11 +119,9 @@ def main():
     except KeyboardInterrupt:
         print("\nApplication stopped!")
     finally:
-        # servo.stop()
         pwm.set_PWM_dutycycle( servo, 0 )
         pwm.set_PWM_frequency( servo, 0 )
         gpio.gpioCleanup()
-
 
 if __name__ == "__main__":
     main()

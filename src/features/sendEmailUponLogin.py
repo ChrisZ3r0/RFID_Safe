@@ -21,7 +21,7 @@ class EmailSender:
 		self.EMAIL_MESSAGE_NOT_VALID = "Someone tried to log in at time: "
 		self.EMAIL_MESSAGE_ADMIN = "Admin login at time: "
 		self.EMAIL_MESSAGE_PLOTTER = "Data evaluation has been sent in attachment!"
-
+		self.EMAIL_MESSAGE_CAMERA = "Image has been sent in attachment!"
 	def setUpAlertEmailForValidLogin(self, timeOfActivation):
 		self.emailToSend = EmailMessage()
 		emailMessage = self.EMAIL_MESSAGE_VALID + timeOfActivation
@@ -39,6 +39,14 @@ class EmailSender:
 		with open(f"/home/chris/RFID_Safe/src/diagrams/{timeOfActivation}.png", "rb") as plot:
 			imgData = plot.read()
 			self.emailToSend.add_attachment(imgData, maintype='image', subtype='png')
+
+	def setUpAlertEmailForImage(self, timeOfActivation):
+		self.emailToSend = EmailMessage()
+		emailMessage = self.EMAIL_MESSAGE_CAMERA + timeOfActivation
+		self.emailToSend.set_content(emailMessage)
+		with open(f"/home/chris/RFID_Safe/src/images/{timeOfActivation}.jpg", "rb") as plot:
+			imgData = plot.read()
+			self.emailToSend.add_attachment(imgData, maintype='image', subtype='jpg')
 
 	def setUpAlertEmailForAdminLogin(self, timeOfActivation):
 		emailMessage = self.EMAIL_MESSAGE_ADMIN + timeOfActivation
