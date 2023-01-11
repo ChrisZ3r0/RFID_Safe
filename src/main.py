@@ -2,6 +2,7 @@
 
 import os
 import time
+import pigpio
 from dotenv import load_dotenv
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
@@ -21,9 +22,15 @@ def main():
     PiGpio.setGpioModeToBoard()
     gpio = PiGpio()
     gpio.setupGpio()
-    GPIO.setup(12, GPIO.OUT)
-    servo = GPIO.PWM(12, 50)
-    servo.start(0)
+    # GPIO.setup(12, GPIO.OUT) #volt 12 es
+    # servo = GPIO.PWM(12, 50)# volt 12 es
+    # servo.start(11)
+
+    servo = 12
+    pwm = pigpio.pi()
+    pwm.set_mode(servo, pigpio.OUTPUT)
+    pwm.set_PWM_frequency(servo, 50)
+
     safe = Safe()
     email = EmailSender(os.getenv("GMAIL_SENDER_ADDRESS"), os.getenv("GMAIL_APP_CODE"), os.getenv("GMAIL_SENDER_ADDRESS"))
     rfidReader = SimpleMFRC522() # Ennek nem lehetne PIN-t adni? Mert ha nem adsz, defaultra megy, és megtalálja, de itt nem?
@@ -45,29 +52,42 @@ def main():
                     print("Touch your RFID")
                     cardId, text = rfidReader.read()
                     print(text)
-                    if text == safe.admin_password:
+                    if cardId ==safe.admin_password: #changed to the card id, it is unique so it should be safe
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        duty = 8  # 8n a nyilt 14-15 aa zart
-                        while duty <= 15:  # 90 / 6 degree => 15 rotations
-                            servo.ChangeDutyCycle(duty)
-                            time.sleep(1)
-                            duty = duty + 1
+                        # servo.ChangeDutyCycle(6)
+                        time.sleep(10)
+                        # servo.ChangeDutyCycle(11)
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
+                        logger.logAttemptedLogin(loginTime, 0)
+                        email.setUpAlertEmailForNotValidLogin(loginTime)
+                        email.sendAnAlertEmail()
                         gpio.startBuzzer()
+                        time.sleep(0.5)
                         gpio.stopBuzzer()
+                        gpio.startLed(0)
+                        gpio.stopLed(0)
 
                 elif safe.pinIsValid(inputPin):
                     print("Pin is valid")
                     logger.logAttemptedLogin(loginTime, 1)
 
-                    duty = 8   # 8n a nyilt 14-15 aa zart
-                    while duty <= 15:  # 90 / 6 degree => 15 rotations
-                        servo.ChangeDutyCycle(duty)
-                        time.sleep(1)
-                        duty = duty + 1
+                    # servo.ChangeDutyCycle(6)
+                    # time.sleep(10)
+                    # servo.ChangeDutyCycle(11)
+                    print( "0 deg" )
+                    pwm.set_servo_pulsewidth( servo, 500 ) ;
+                    time.sleep( 3 )
+
+                    print( "90 deg" )
+                    pwm.set_servo_pulsewidth( servo, 1500 ) ;
+                    time.sleep( 3 )
+
+                    print( "180 deg" )
+                    pwm.set_servo_pulsewidth( servo, 2500 ) ;
+                    time.sleep( 3 )
 
                     email.setUpAlertEmailForValidLogin(loginTime)
                     email.sendAnAlertEmail()
@@ -80,10 +100,10 @@ def main():
                         gpio.stopLed(0.1)
 
                     gpio.startBuzzer()
-                    gpio.startLed(0)
+                    gpio.startLed(0.1)
                     time.sleep(0.5)
                     gpio.stopBuzzer()
-                    gpio.stopLed(0)
+                    gpio.stopLed(0.1)
 
                 elif inputPin == safe.plotter_mode:
                     plotter.evaluateLoginData()
@@ -97,7 +117,7 @@ def main():
                     time.sleep(0.5)
                     gpio.stopBuzzer()
                     logger.logAttemptedLogin(loginTime, 0)
-                    servo.ChangeDutyCycle(0)
+                    # servo.ChangeDutyCycle(0)
                     email.setUpAlertEmailForNotValidLogin(loginTime)
                     email.sendAnAlertEmail()
                     gpio.startLed(0)
@@ -107,11 +127,15 @@ def main():
             else:
                 time.sleep(0.1)
             if characterGot:
+                gpio.startBuzzer()
                 time.sleep(0.5)
+                gpio.stopBuzzer()
     except KeyboardInterrupt:
         print("\nApplication stopped!")
     finally:
-        servo.stop()
+        # servo.stop()
+        pwm.set_PWM_dutycycle( servo, 0 )
+        pwm.set_PWM_frequency( servo, 0 )
         gpio.gpioCleanup()
 
 

@@ -5,7 +5,7 @@ import time
 class PiGpio:
     def __init__(self):
         self.L4 = 37
-        self.L2 = 33
+        self.L2 = 33 #volt 33 as
         self.L3 = 35
         self.L1 = 31
         self.C1 = 32

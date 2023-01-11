@@ -2,7 +2,7 @@ class Safe:
     def __init__(self):
         self.isOpen = False
         self.admin_mode = "AAAA"
-        self.admin_password = "0000"
+        self.admin_password = 519888017750
         self.plotter_mode = "BBBB"
 
     def getIsOpen(self) -> bool:

@@ -53,8 +53,8 @@ class Plotter:
         ax.set_xticklabels(self.monthsLabels)
         ax.legend()
 
-        self.autolabel(rects1)
-        self.autolabel(rects2)
+        self.autolabel(ax, rects1)
+        self.autolabel(ax, rects2) #wrote ax first argument
 
         fig.tight_layout()
         plt.savefig(f"/home/chris/RFID_Safe/src/diagrams/{timeOfSaving}.png")
