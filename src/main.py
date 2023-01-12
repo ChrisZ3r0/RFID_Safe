@@ -26,7 +26,7 @@ def main():
     pwm = pigpio.pi()
     pwm.set_mode(servo, pigpio.OUTPUT)
     pwm.set_PWM_frequency(servo, 50)
-
+    GPIO.setup(32, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     safe = Safe()
     email = EmailSender(os.getenv("GMAIL_SENDER_ADDRESS"), os.getenv("GMAIL_APP_CODE"), os.getenv("GMAIL_SENDER_ADDRESS"))
     rfidReader = SimpleMFRC522() # Ennek nem lehetne PIN-t adni? Mert ha nem adsz, defaultra megy, és megtalálja, de itt nem?
@@ -41,6 +41,9 @@ def main():
             inputPin += characterGot
             print(inputPin)
             if characterGot and len(inputPin) == 4:
+                gpio.startBuzzer()
+                time.sleep(0.5)
+                gpio.stopBuzzer()
                 loginTime = getDateAndTimeFormatted()
 
                 camera.captureImage(loginTime)
@@ -51,7 +54,17 @@ def main():
                     if cardId ==safe.admin_password: #changed to the card id, it is unique so it should be safe
                         print("Admin login")
                         logger.logAttemptedLogin(loginTime, 1)
-                        time.sleep(10)
+                        print( "90 deg" )
+                        pwm.set_servo_pulsewidth( servo, 1500 ) ;
+                        # time.sleep( 10 )
+                        print("opening servo")
+                        while GPIO.input(32) == GPIO.LOW:
+                            print("in while loop")
+                            time.sleep(0.5)
+                            print("while loop after sleep")
+                        print("after while")
+                        print( "0 deg" )
+                        pwm.set_servo_pulsewidth( servo, 500 ) ;
                         email.setUpAlertEmailForAdminLogin(loginTime)
                         email.sendAnAlertEmail()
                     else:
@@ -70,8 +83,13 @@ def main():
 
                     print( "90 deg" )
                     pwm.set_servo_pulsewidth( servo, 1500 ) ;
-                    time.sleep( 10 )
-
+                    # time.sleep( 10 )
+                    print("opening servo")
+                    while GPIO.input(32) == GPIO.LOW:
+                        print("in while loop")
+                        time.sleep(0.5)
+                        print("while loop after sleep")
+                    print("after while")
                     print( "0 deg" )
                     pwm.set_servo_pulsewidth( servo, 500 ) ;
                     
