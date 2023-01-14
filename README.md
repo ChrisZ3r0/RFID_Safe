@@ -10,6 +10,7 @@ Sikeres és sikertelen próbálkozás után e-mail küldése a nyitási kisérle
 #Kiegészítő Github page az emailküldés automatizáláshoz:
 https://github.com/ChrisZ3r0/ESS
 
+#
 
 Szerzők:
 Kollár Krisztián
