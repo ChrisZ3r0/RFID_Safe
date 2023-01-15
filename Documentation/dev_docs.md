@@ -4,6 +4,7 @@
 
 ---
 
+![Összekötések](/Documentation/images/SCR-20230115-qhp.png)
 
 Board alapú megnevezések ahol, a bal oszlop a páratlan, jobb oszlop a páros és lefelé növekszik a számozás.
 
@@ -17,16 +18,15 @@ Red led → 11
 
 Buzzer → 16
 
-RFID →   
-- SDA	 → 	24
-- SCK	 → 	23
-- MOSI → 	19
-- GND	 →
-- RST	 → 	22
-- 3.3v → 1  
+RFID → 
+- SDA → 24
+- SCK → 23
+- MOSI → 19
+- GND → 6
+- RST → 22
+- 3.3v → 1
 
 Button → 32
-
 
 A kód pythonban íródott, és struktúráját tekintve mindent ki szerettünk volna vonni a mainből.
 
@@ -53,7 +53,6 @@ Az adatokat matplotlib segítségével a releváns osztály fogja kiértékelni 
 ### Email küldés
 Felhasználjuk hozzá az email.message, az smtplib, illetve az ssl packageket.
 
-
 3 féle setup metódusunk van, mindegyik felülírja az eddig tartalmakat, majd elmenti az adott konfigurációhoz szükséges módosításokat. Például csatolmányként hozzáadja a generált matplotlib imaget.
 
 Ezután a környezeti változóban beállított értékeket felhasználva elküldi az e mailt a beállított e mail címre, esetünkben a sajátunkra.
@@ -73,8 +72,7 @@ Ezután generál egy grafikont. Ezen a grafikonon láthatók többek között ha
 Ezután menti a képet, amit az emailező osztály használ fel, (hogy értesítse megfelelő kód után a felhasználót az adatokról) a diagrams mappából veszi a képet.
 
 ### Servo
-Egy kis szervót használunk a pi által generált PWM-el. Ez nekünk csak a széf nyitásához és zárásához kell. 
-
+Egy kis szervót használunk a pi által generált PWM-el. Ez nekünk csak a széf nyitásához és zárásához kell.
 
 ### RFID olvasó
 Adminként tudunk bejelentkezni a széfbe. Használatához az admin kódot, azaz “0000”-t kell beírni.
@@ -105,7 +103,6 @@ Az előbbi 3 osztályt egy GPIO közös osztályban tároljuk el, az egyszerűbb
 Ez a kamera mindig fotóz sikertelen bejelentkezés esetén. Ezt a fotót az előbb említett email küldő script el is küldi.
 
 Elvárjuk a felhasználó felé hogy a széfet olyan helyre rakja, ahol ha valaki bejelentkezni próbál, fej magasságba legyen a széf által tartalmazott kamera, hogy mindig a “betörni” kívánó személy fejét és arcát tartalmazza.
-
 
 `https://github.com/ChrisZ3r0/ESS`
 
