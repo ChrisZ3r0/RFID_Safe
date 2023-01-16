@@ -1,42 +1,5 @@
 ## Felhasználói dokumentáció
 
-Előkövetelmények:
-Általunk használt eszközök:
-
-1 x Raspberry pi 4 model B 8gb
-
-1 x piros és zöld LED
-
-1 x Breadboard
-
-1 x Pi camera 8MP
-
-1 x 9v elegoo power supply
-
-1 x USB A to USB C cable
-
-1 x passive/ active buzzer
-
-2 x xxxx ohm ellenállás
-
-1 x elegoo power MB v2 power supply module
-
-X x female to male cable
-
-X x male to male cable
-
-1 x 4x4 pinpad
-
-1 x RFID-RC522
-
-1 x MicroServo 9g SG90
-
-1 x powerbank
-
-1 x button
-
-1 x short Breadboard
-
 ---
 
 Telepítendő szoftverek:

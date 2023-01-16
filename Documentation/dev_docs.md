@@ -6,29 +6,143 @@
 
 ![Összekötések](/Documentation/images/SCR-20230115-qhp.png)
 
-Board alapú megnevezések ahol, a bal oszlop a páratlan, jobb oszlop a páros és lefelé növekszik a számozás.
+Előkövetelmények:
+Általunk használt eszközök:
 
-Servo → 12
+1 x Raspberry pi 4 model B 8gb
 
-Numpad → 29, 31, 33, 35, 36, 37, 38, 40
+1 x piros és zöld LED
 
-Green led → 18
+1 x Breadboard
 
-Red led → 11
+1 x Pi camera 8MP
 
-Buzzer → 16
+1 x 9v elegoo power supply
 
-RFID → 
-- SDA → 24
-- SCK → 23
-- MOSI → 19
-- GND → 6
-- RST → 22
-- 3.3v → 1
+1 x USB A to USB C cable
 
-Button → 32
+1 x passive/ active buzzer
 
-A kód pythonban íródott, és struktúráját tekintve mindent ki szerettünk volna vonni a mainből.
+2 x xxxx ohm ellenállás
+
+1 x elegoo power MB v2 power supply module
+
+X x female to male cable
+
+X x male to male cable
+
+1 x 4x4 pinpad
+
+1 x RFID-RC522
+
+1 x MicroServo 9g SG90
+
+1 x powerbank
+
+1 x button
+
+1 x short Breadboard
+
+---
+
+Board alapú megnevezéseket használunk, ahol a bal oszlop a páratlan, jobb oszlop a páros és lefelé növekszik a számozás.
+
+Ez alapján:
+- Servo → 12
+- Numpad → 29, 31, 33, 35, 36, 37, 38, 40
+- Green led → 18
+- Red led → 11
+- Buzzer → 16
+- RFID → 
+  - SDA → 24
+  - SCK → 23
+  - MOSI → 19
+  - GND → 6
+  - RST → 22
+  - 3.3v → 1
+- Button → 32
+
+---
+## Projekt Specifikációk, követelmények
+
+A projektnek képesnek kell ellátnia egy széf szerepét.
+
+A széfbe több módon is be lehessen jutni, lehessen például kódot beírni egy számokból 
+(és betűkből) álló felületen ( -> numpad), 
+valamint jelezzünk vissza a felhasználónak, 
+legyen reszponzív (fények és hangjelzések), illetve kapjunk emailben értesítéseket, ha valaki belép a széfbe.
+
+Extra követelmények: 
+Készítsünk fotót, amennyiben rossz kódot ütnek be
+és emailben továbbítsuk a beállított címre, 
+valamint ugyanerre a címre küldjünk havi kiértékeléseket([matplotlib használatával](#matplotlib-adatelemzés)).
+
+---
+
+### A soron következő alap use-caseket folyamatábrákon szemléltetjük!
+
+---
+
+### Valid Login
+
+![Valid Login Flowchart](/Documentation/images/valid_flowchart.png)
+
+Az folyamatábrán a következő látható:
+- A felhasználó beüti a jó jelszót
+- Jelen példában ez 1234
+- Az ajtó kinyitódik
+- Majd közben egy levelet küld a széf a beállított címre, amely tartalmazza, hogy a bejelentkezés sikeres volt, valamint az idejét a bejelentkezésnek.
+- Ezután ha visszacsukjuk az ajtót, egy gomb érzékeli, hogy be lett csukva 
+-> felvillan a zöld LED, és újból ki lehet nyitni a széfet.
+
+---
+
+### Invalid Login
+
+![Valid Login Flowchart](/Documentation/images/invalid_flowchart.png)
+
+Az folyamatábrán a következő látható:
+- A felhasználó rossz jelszót üt be
+- Jelen példában ez 8888
+- Az ajtó zárva marad
+- Felvillan a piros LED
+- Megszólal a BUZZER, ezzel jelezve, hogy sikertelen volt a bejelentkezés
+- Képet készítünk a behatolóról
+- Emailt küldünk a beállított email címre, melyben leírjuk, hogy invalid volt a bejelentkezés, és csatolmányként elküldjük a behatoló képét.
+
+---
+
+### Admin Login
+
+![Valid Login Flowchart](/Documentation/images/admin_flowchart.png)
+
+Az folyamatábrán a a következő látható:
+- A felhasználó az admin módot aktiváló kódot üti be
+- Jelen példában ez AAAA
+- Majd odaérinti az RFID olvasóhoz a kártyáját
+- Ha a kártya fel van véve a rendszerbe, az ajtó kinyílik
+- A beállított email címre pedig érkezik az email, hogy egy admin kinyitotta a széfet.
+
+---
+
+### Adatok kiértékelése kérésre ( Nem időzítve -> Lásd [Automatizált Email Küldés](#automatizált-email-küldés)
+
+![Valid Login Flowchart](/Documentation/images/data_evaluation_flowchart.png)
+
+Az folyamatábrán a a következő látható:
+- A felhasználó az adatkiértékelő és email küldő módot aktiváló kódot üti be
+- Jelen példában ez BBBB
+- Ezután a script először a src/login/login.csv fájlt felhasználva kiértékeli az adatokat
+- Havi bontásban a sikeres, illetve sikertelen bejelentkezésekről készít egy matplotlib diagramot
+- Majd ezt emailben elküldi a beállított email címre csatolmányként.
+
+---
+
+### Általános kód strukturálási alapelvek
+
+A kód pythonban íródott és struktúráját tekintve mindent ki szerettünk volna vonni a mainből, 
+valamint próbáltuk követni a python, 
+illetve az objektumorientált programozás alapelveit.
 
 Ezért készítettünk egy features, login, valamint password mappát, amelyekben a különböző segéd osztályokat, a logoláshoz szükséges bejelentkező adatokat, illetve a jelszót tároljuk a széfhez.
 
@@ -38,9 +152,12 @@ Ezek segítségével a jelszó tárolás, a különböző módokba a belépés, 
 A nyitás zárás úgy történik, hogy a széf kinyílik, majd majd lassan visszacsukódik 0 fokra, beállítható hogy 20 másodperc, 1 perc vagy több időt várjon, mielőtt lassan becsukódik.
 
 A fontosabb, titkos jelszavakat, személyes információkat kivonjuk egy elkülönített fájlba, melyet gitignore-t használva nem töltünk fel a repositoryba, aki telepíti az alkalmazást, saját magának kell beállítania.
-Ez a .env file.
 
-Be kell állítani:
+---
+
+### Ez a .env file.
+
+### Benne be kell állítani:
 
 - _GMAIL_SENDER_ADDRESS_
 - _GMAIL_APP_CODE_
@@ -104,9 +221,10 @@ Ez a kamera mindig fotóz sikertelen bejelentkezés esetén. Ezt a fotót az el�
 
 Elvárjuk a felhasználó felé hogy a széfet olyan helyre rakja, ahol ha valaki bejelentkezni próbál, fej magasságba legyen a széf által tartalmazott kamera, hogy mindig a “betörni” kívánó személy fejét és arcát tartalmazza.
 
+### Automatizált Email Küldés
 `https://github.com/ChrisZ3r0/ESS`
 
-Ez a github page tartalmazza az e mail küldő scriptet külön.
+Ez a github page tartalmazza az e-mail küldő scriptet külön.
 
 Ezt crontab használatával tudjuk automatizálni, nálunk ez a parancs az alább leírt módon néz ki.
 
