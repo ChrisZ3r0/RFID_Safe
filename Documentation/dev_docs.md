@@ -125,7 +125,7 @@ Az folyamatábrán a a következő látható:
 
 ---
 
-### Adatok kiértékelése kérésre ( Nem időzítve -> Lásd [Automatizált Email Küldés](#automatizált-email-küldés)
+### Adatok kiértékelése kérésre ( Nem időzítve -> Lásd [Automatizált Email Küldés](#automatizált-email-küldés))
 
 ![Valid Login Flowchart](/Documentation/images/data_evaluation_flowchart.png)
 
