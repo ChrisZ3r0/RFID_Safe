@@ -3,7 +3,7 @@
 ---
 ### Elvárások
 
-Olyan helyre rakd a széfet ahol ha használod mindig fejmagasságban legyen neked a számsor, így biztosítva ha valaki olyan akar belépni azt biztosan lefotózza a kamera.
+Olyan helyre rakd a széfet ahol ha használod mindig fejmagasságban legyen neked a számsor, így biztosítva ha valaki illetéktelen akar belépni azt biztosan lefotózza a kamera.
 
 Olyan helyre rakd, ahol a beüzemelés után senki sem fér hozzá az áramforráshoz és a tápegységhez.
 
