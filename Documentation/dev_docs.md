@@ -221,12 +221,15 @@ Egy kis szervót használunk a pi által generált PWM-el. Ez nekünk csak a sz�
 A servo jobb működéséhez ez a parancs kell:
 
 `$ sudo apt-get update && sudo apt-get install python3-pigpio`
+
 (Ha ez nincs telepítve akkor a servo nagyon jittery lesz és folyamat mozogni fog)
 
 `$ sudo systemctl enable pigpiod`
+
 Hogy újraindítás után is folyamatosan fusson a pigpiod service
 
 Ha most ujraindítás nélkül el akarjuk indítani akkor futtassuk le ezt:
+
 `$ sudo pigpiod`
 
 
@@ -288,11 +291,17 @@ Aktiválni kell az _SPI_ elemet, majd: `$ sudo reboot`
 Ha minden jól ment akkor: `$ lsmod | grep spi` parancs után látnunk kell egy _spi_bcm2835_ elemet.
 
 Utána pedig ezeket a parancsokat kell lefuttatnunk:
+
 `$ sudo apt update`
+
 `$ sudo apt upgrade`
+
 `$ sudo apt install python3-dev python3-pip`
+
 `$ sudo pip3 install spidev`
+
 `$ sudo pip3 install mfrc522`
+
 
 Az RFID működésre kész.
 ---
