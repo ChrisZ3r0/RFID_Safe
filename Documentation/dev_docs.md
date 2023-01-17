@@ -6,7 +6,8 @@
 
 ![Összekötések](/Documentation/images/SCR-20230115-qhp.png)
 
-Előkövetelmények:
+### Előkövetelmények:
+
 Általunk használt eszközök:
 
 1 x Raspberry pi 4 model B 8gb
@@ -44,6 +45,8 @@ X x male to male cable
 1 x short Breadboard
 
 ---
+
+### PIN kiosztás
 
 Board alapú megnevezéseket használunk, ahol a bal oszlop a páratlan, jobb oszlop a páros és lefelé növekszik a számozás.
 
@@ -288,6 +291,7 @@ Ez a kamera mindig fotóz sikertelen bejelentkezés esetén. Ezt a fotót az el�
 Elvárjuk a felhasználó felé hogy a széfet olyan helyre rakja, ahol ha valaki bejelentkezni próbál, fej magasságba legyen a széf által tartalmazott kamera, hogy mindig a “betörni” kívánó személy fejét és arcát tartalmazza.
 
 ### Automatizált Email Küldés
+
 `https://github.com/ChrisZ3r0/ESS`
 
 Ez a github page tartalmazza az e-mail küldő scriptet külön.
@@ -301,3 +305,16 @@ Ez a script ugyanaz mint amit a fő projektben használunk, csak lefejtve belől
 Ez csak a CSV diagramot küldi el minden hónap első napján.
 
 Ez a script ugyanúgy elemzi a CSV fájlt amit a fő mappában találunk, így mindig a legfrissebb állását küldi el a usernek.
+
+## Összefoglalás
+
+A fentebb leírt eszközök és módszerek segítségével megoldottuk az összes, 
+a projekt leírásában és megfogalmazásában specifikált problémát.
+
+Kiemelt figyelmet fordítottunk a kód megfelelő minőségére, és manuális tesztelésére.
+
+Jelen állapotában a kódbázis egy széf teljes "munkáját" / funkcióját el képes látni.
+
+## Írók:
+Kollár Krisztián
+Töreky Zsombor
