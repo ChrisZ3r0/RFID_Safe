@@ -149,7 +149,6 @@ Ezért készítettünk egy features, login, valamint password mappát, amelyekbe
 Az alap use case teljesítését a password.txt, illetve a features/safe.py, illetve a features/PiGpio.py fájlokkal oldottuk meg.
 
 Ezek segítségével a jelszó tárolás, a különböző módokba a belépés, valamint a szervó motor nyitása / zárása megoldhatóvá válik.
-A nyitás zárás úgy történik, hogy a széf kinyílik, majd majd lassan visszacsukódik 0 fokra, beállítható hogy 20 másodperc, 1 perc vagy több időt várjon, mielőtt lassan becsukódik.
 
 A fontosabb, titkos jelszavakat, személyes információkat kivonjuk egy elkülönített fájlba, melyet gitignore-t használva nem töltünk fel a repositoryba, aki telepíti az alkalmazást, saját magának kell beállítania.
 
