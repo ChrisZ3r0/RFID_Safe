@@ -171,7 +171,7 @@ Felhasználjuk hozzá az email.message, az smtplib, illetve az ssl packageket.
 
 3 féle setup metódusunk van, mindegyik felülírja az eddig tartalmakat, majd elmenti az adott konfigurációhoz szükséges módosításokat. Például csatolmányként hozzáadja a generált matplotlib imaget.
 
-Ezután a környezeti változóban beállított értékeket felhasználva elküldi az e mailt a beállított e mail címre, esetünkben a sajátunkra.
+Ezután a környezeti változóban beállított értékeket felhasználva elküldi az e mailt a beállított e-mail címre, esetünkben a sajátunkra.
 
 ### Szervó forgatás
 A mainben írtuk meg a kódot, és nem vontuk ki a megvalósítást a gpio osztályunkba, mivel valamiért nem megfelelő volt a működése abban az esetben.
