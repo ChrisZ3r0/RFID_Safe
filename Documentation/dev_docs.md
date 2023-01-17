@@ -4,7 +4,29 @@
 
 ---
 
+## Projekt Specifikációk, követelmények
+
+A projektnek képesnek kell ellátnia egy széf szerepét.
+
+A széfbe több módon is be lehessen jutni, lehessen például kódot beírni egy számokból 
+(és betűkből) álló felületen ( -> numpad), 
+valamint jelezzünk vissza a felhasználónak, 
+legyen reszponzív (fények és hangjelzések), illetve kapjunk emailben értesítéseket, ha valaki belép a széfbe.
+
+Extra követelmények: 
+Készítsünk fotót, amennyiben rossz kódot ütnek be
+és emailben továbbítsuk a beállított címre, 
+valamint ugyanerre a címre küldjünk havi kiértékeléseket([matplotlib használatával](#plotter)).
+
+---
+
 ![Összekötések](/Documentation/images/SCR-20230115-qhp.png)
+
+### Eszközök kiválasztása
+
+A specifikációkban lefoglaltak alapján eléggé leszűkült hogy mégis milyen eszközt érdemes nekünk használni a projekthez. Az emailküldés és fotókésszítés miatt döntöttünk úgy hogy ahelyett hogy egy géphez kötött arduinot használunk, beszerzünk egy raspberry pi 4B-t és rákötjük a saját kameramoduljukat, ezzel megkönnyítjük a netre való felcsatlakozást illetve az email küldési folyamatot is. Ezek mellett könnyebb akár a projektet kibővíteni, a képeket, illetve log adatokat könnyen beállíthatjuk hogy mentse nekünk a felhőbe, de a könnyebbség érdekében nekünk jelenleg egyszerűbb a Pi sd kártyájára menteni.
+
+Ezek után kiválasztottuk a belépéshez használandó eszközöket. A számkódhoz használtunk egy 4x4 es pinpadet, ezzel is több alternatív kód lehetőségének a fenntartására, az RFID hoz egy RC522 modult kötöttünk be. A fényjelzésekhez két darab egyszerű ledet használunk, amelynek a színe egyértelművé teszi hogy rossz vagy jó kód került beütésre és a hangjelzésnek egy active buzzert tettünk bele az áramkörbe.
 
 ### Előkövetelmények:
 
@@ -16,27 +38,27 @@
 
 1 x Breadboard
 
-1 x Pi camera 8MP
+1 x Pi camera v2 8MP
 
 1 x 9v elegoo power supply
 
 1 x USB A to USB C cable
 
-1 x passive/ active buzzer
+1 x active buzzer
 
-2 x xxxx ohm ellenállás
+2 x 220 ohm ellenállás
 
 1 x elegoo power MB v2 power supply module
 
-X x female to male cable
+35 x female to male cable
 
-X x male to male cable
+5 x male to male cable
 
 1 x 4x4 pinpad
 
-1 x RFID-RC522
+1 x RFID-RC522  (works at 13.56MHz, supports ISO 14443A/MIFARE mode)
 
-1 x MicroServo 9g SG90
+1 x MicroServo 9g SG90  (working voltage:3.5~6V, stall torque: 1.6kg/cm)
 
 1 x powerbank
 
@@ -65,22 +87,6 @@ Ez alapján:
   - 3.3v → 1
 - Button → 32
 
----
-## Projekt Specifikációk, követelmények
-
-A projektnek képesnek kell ellátnia egy széf szerepét.
-
-A széfbe több módon is be lehessen jutni, lehessen például kódot beírni egy számokból 
-(és betűkből) álló felületen ( -> numpad), 
-valamint jelezzünk vissza a felhasználónak, 
-legyen reszponzív (fények és hangjelzések), illetve kapjunk emailben értesítéseket, ha valaki belép a széfbe.
-
-Extra követelmények: 
-Készítsünk fotót, amennyiben rossz kódot ütnek be
-és emailben továbbítsuk a beállított címre, 
-valamint ugyanerre a címre küldjünk havi kiértékeléseket([matplotlib használatával](#plotter)).
-
----
 
 ### A soron következő alap use-caseket folyamatábrákon szemléltetjük!
 
@@ -212,6 +218,18 @@ felhasználva elküldi az e-mailt a beállított e-mail címre, esetünkben a sa
 
 ### Servo
 Egy kis szervót használunk a pi által generált PWM-el. Ez nekünk csak a széf nyitásához és zárásához kell.
+A servo jobb működéséhez ez a parancs kell:
+
+`$ sudo apt-get update && sudo apt-get install python3-pigpio`
+(Ha ez nincs telepítve akkor a servo nagyon jittery lesz és folyamat mozogni fog)
+
+`$ sudo systemctl enable pigpiod`
+Hogy újraindítás után is folyamatosan fusson a pigpiod service
+
+Ha most ujraindítás nélkül el akarjuk indítani akkor futtassuk le ezt:
+`$ sudo pigpiod`
+
+
 
 ### Szervó forgatás
 
@@ -262,6 +280,21 @@ Adminként tudunk bejelentkezni a széfbe. Használatához az admin kódot, azaz
 Ezután érintsük oda a kártyánkat, melyet beolvasunk, és ha a kód egyezik, akkor a széf kinyílik.
 Ha nem egyezik meg, akkor failed login alertet küld emailben a usernek, és nem nyílik ki a széf.
 
+Beállítása
+`$ sudo raspi-config`
+
+Kiválasztjuk az "_Interface Options_"-t.
+Aktiválni kell az _SPI_ elemet, majd: `$ sudo reboot`
+Ha minden jól ment akkor: `$ lsmod | grep spi` parancs után látnunk kell egy _spi_bcm2835_ elemet.
+
+Utána pedig ezeket a parancsokat kell lefuttatnunk:
+`$ sudo apt update`
+`$ sudo apt upgrade`
+`$ sudo apt install python3-dev python3-pip`
+`$ sudo pip3 install spidev`
+`$ sudo pip3 install mfrc522`
+
+Az RFID működésre kész.
 ---
 
 ### Ledek
@@ -339,6 +372,14 @@ a projekt leírásában és megfogalmazásában specifikált problémát.
 Kiemelt figyelmet fordítottunk a kód megfelelő minőségére, és manuális tesztelésére.
 
 Jelen állapotában a kódbázis egy széf teljes "munkáját" / funkcióját el képes látni.
+
+És itt a végén egy kész projekt megvalósítás is látható képeken.
+
+## Képek
+
+![Projekt kép 1](/Documentation/images/Project1.png)
+![Projekt kép 2](/Documentation/images/Project2.png)
+![Projekt kép 3](/Documentation/images/Project3.png)
 
 ## Írók:
 
