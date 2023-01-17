@@ -93,3 +93,8 @@ A parancs: crontab -e, ezzel létrehozzuk/szerkesszük az automatizáláshoz a p
 
 Illetve át kell írni a CSV fájlt tartalmazó mappa nevét.
 
+## Szerzők:
+
+Kollár Krisztián
+
+Töreky zsombor
