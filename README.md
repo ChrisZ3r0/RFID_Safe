@@ -23,5 +23,7 @@ A felhasználói, illetve a fejlesztői dokumentációk az alábbi linkeken kere
 ---
 
 Szerzők:
+
 Kollár Krisztián
+
 Töreky Zsombor
