@@ -164,6 +164,8 @@ A fontosabb, titkos jelszavakat, személyes információkat kivonjuk egy elkül�
 - _GMAIL_SENDER_ADDRESS_
 - _GMAIL_APP_CODE_
 
+---
+
 ### Logger
 
 Argumentumok:
@@ -176,6 +178,8 @@ Ezen kívül egy metódusa van, amely összeállítja és fájlba írja az adott
 Az adatokat [matplotlib segítségével](#plotter) a releváns osztály fogja kiértékelni hónapos szinten, amiből egy grafikont készít majd.
 
 A Logger osztály tehát függősége az [EmailSender()](#email-küldés) osztálynak.
+
+---
 
 ### Email küldés
 
@@ -204,6 +208,8 @@ Ez például a Factory Pattern-t követi, a Design Patternek egyik fajtáját.
 Ezután a környezeti változóban beállított értékeket 
 felhasználva elküldi az e-mailt a beállított e-mail címre, esetünkben a sajátunkra.
 
+---
+
 ### Servo
 Egy kis szervót használunk a pi által generált PWM-el. Ez nekünk csak a széf nyitásához és zárásához kell.
 
@@ -222,6 +228,8 @@ Több elképzelés is volt a széf zárására vonatkozóan.
 Például, hogy nem ajtót nyitunk, hanem egyfajta "zárat" görgetünk elé.
 
 Ezeket elvetettük, és az elegáns, de nehezebb megoldás mellett döntöttünk.
+
+---
 
 ### Plotter
 
@@ -243,18 +251,27 @@ mivel nem volt frisebb változat elérhető.
 Ezután menti a képet, amit az emailező osztály használ fel,
 (hogy értesítse megfelelő kód után a felhasználót az adatokról)
 
- Ehhez a /src/diagrams mappából veszi a képet.
+Ehhez a /src/diagrams mappából veszi a képet.
+
+---
 
 ### RFID olvasó
-Adminként tudunk bejelentkezni a széfbe. Használatához az admin kódot, azaz “0000”-t kell beírni.
+
+Adminként tudunk bejelentkezni a széfbe. Használatához az admin kódot, azaz “AAAA”-t kell beírni.
 
 Ezután érintsük oda a kártyánkat, melyet beolvasunk, és ha a kód egyezik, akkor a széf kinyílik.
 Ha nem egyezik meg, akkor failed login alertet küld emailben a usernek, és nem nyílik ki a széf.
 
+---
+
 ### Ledek
+
 Kétféle ledet használtunk egy pirosat és egy zöldet.
+
 Értelemszerűen pozitív, sikeres bejelentkezés esetén a zöld villan fel.
 Míg sikertelen bejelentkezés esetén a piros LED ad visszajelzést.
+
+---
 
 ### Button
 
@@ -275,6 +292,8 @@ Megoldás: Egy gomb elhelyezése az ajtó előtt, melyet ha becsukunk, érzékel
 Ez a gomb bármilyen egyszerű momentary kapcsoló is lehet,
 nálunk ez mondja el a széfnek hogy az ajtót becsuktuk, és zárja be magát.
 
+---
+
 ### Buzzer
 
 Minden gomb nyomás esetén is megszólal hogy a felhasználó tudja hogy a beírt PIN-t befogadta a széf..
@@ -284,11 +303,15 @@ Egyértelműen jelezzük, hogy a kód rossz volt, a bejutás sikertelen.
 
 Az előbbi 3 osztályt egy GPIO közös osztályban tároljuk el, az egyszerűbb használat jegyében.Eleget teszünk ezzel az objektumorientált tervezés követelményeinek is.
 
+---
+
 ### Raspberry pi Camera v2
 
 Ez a kamera mindig fotóz sikertelen bejelentkezés esetén. Ezt a fotót az előbb említett email küldő script el is küldi.
 
 Elvárjuk a felhasználó felé hogy a széfet olyan helyre rakja, ahol ha valaki bejelentkezni próbál, fej magasságba legyen a széf által tartalmazott kamera, hogy mindig a “betörni” kívánó személy fejét és arcát tartalmazza.
+
+---
 
 ### Automatizált Email Küldés
 
@@ -306,6 +329,8 @@ Ez csak a CSV diagramot küldi el minden hónap első napján.
 
 Ez a script ugyanúgy elemzi a CSV fájlt amit a fő mappában találunk, így mindig a legfrissebb állását küldi el a usernek.
 
+---
+
 ## Összefoglalás
 
 A fentebb leírt eszközök és módszerek segítségével megoldottuk az összes, 
@@ -316,5 +341,7 @@ Kiemelt figyelmet fordítottunk a kód megfelelő minőségére, és manuális t
 Jelen állapotában a kódbázis egy széf teljes "munkáját" / funkcióját el képes látni.
 
 ## Írók:
+
 Kollár Krisztián
+
 Töreky Zsombor
