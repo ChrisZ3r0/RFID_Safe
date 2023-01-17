@@ -22,6 +22,7 @@ class EmailSender:
 		self.EMAIL_MESSAGE_ADMIN = "Admin login at time: "
 		self.EMAIL_MESSAGE_PLOTTER = "Data evaluation has been sent in attachment!"
 		self.EMAIL_MESSAGE_CAMERA = "Image has been sent in attachment!"
+
 	def setUpAlertEmailForValidLogin(self, timeOfActivation):
 		self.emailToSend = EmailMessage()
 		emailMessage = self.EMAIL_MESSAGE_VALID + timeOfActivation

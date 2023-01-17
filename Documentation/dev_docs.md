@@ -75,7 +75,7 @@ legyen reszponzív (fények és hangjelzések), illetve kapjunk emailben értes�
 Extra követelmények: 
 Készítsünk fotót, amennyiben rossz kódot ütnek be
 és emailben továbbítsuk a beállított címre, 
-valamint ugyanerre a címre küldjünk havi kiértékeléseket([matplotlib használatával](#matplotlib-adatelemzés)).
+valamint ugyanerre a címre küldjünk havi kiértékeléseket([matplotlib használatával](#plotter)).
 
 ---
 
@@ -162,33 +162,85 @@ A fontosabb, titkos jelszavakat, személyes információkat kivonjuk egy elkül�
 - _GMAIL_APP_CODE_
 
 ### Logger
-A logger kap egy argumentumot, hogy hova mentse el a megadott fájlt. Ezen kívül egy metódusa van, amely összeállítja, és fájlba írja az adott sornyi bejelentkezési adatokat, vagyis az idejét, illetve a sikerességét.
 
-Az adatokat matplotlib segítségével a releváns osztály fogja kiértékelni hónapos szinten, amiből egy grafikont készít majd.
+Argumentumok:
+- path -> Hova mentse az időt, és a sikerességet
+
+Egy argumentuma van, hogy hova mentse el a megadott fájlt. 
+
+Ezen kívül egy metódusa van, amely összeállítja és fájlba írja az adott sornyi bejelentkezési adatokat, vagyis az idejét, illetve a sikerességét.
+
+Az adatokat [matplotlib segítségével](#plotter) a releváns osztály fogja kiértékelni hónapos szinten, amiből egy grafikont készít majd.
+
+A Logger osztály tehát függősége az [EmailSender()](#email-küldés) osztálynak.
 
 ### Email küldés
-Felhasználjuk hozzá az email.message, az smtplib, illetve az ssl packageket.
 
-3 féle setup metódusunk van, mindegyik felülírja az eddig tartalmakat, majd elmenti az adott konfigurációhoz szükséges módosításokat. Például csatolmányként hozzáadja a generált matplotlib imaget.
+Argumentumok:
+- senderEmail -> Küldő fél email címe
+- password -> Küldő fél emailjének a jelszava (App code -> Lásd [kétlépcsős azonosítás](#benne-be-kell-állítani:))
+- targetEmail -> Aki kapja az emailt
+- EMAIL_SENDER_ID -> Milyen néven küldjük ki az emailt -> default: "Safe"
+- SMTP_SERVER -> default: "smtp.gmail.com"
+- SMTP_PORT -> default: 445
 
-Ezután a környezeti változóban beállított értékeket felhasználva elküldi az e mailt a beállított e-mail címre, esetünkben a sajátunkra.
+Függőségek:
+- email.message -> EmailMessage()
+- smtplib
+- ssl packagek
+- [Logger](#logger) class -> Ez állítja elő folyamatosan a kiértékelés alapjául szolgáló src/login/login.csv fájlt.
 
-### Szervó forgatás
-A mainben írtuk meg a kódot, és nem vontuk ki a megvalósítást a gpio osztályunkba, mivel valamiért nem megfelelő volt a működése abban az esetben.
+Fő használt osztályunk az EmailMessage() osztály, ennek segítségével könnyen össze tudjuk állítani a küldendő emailt,
+mivel Builder Design Patternt használ -> Könnyű konstruktálni egy emailt.
 
-Nyitásnál 90%-ot fordul befelé, majd szépen lassan visszaáll zárt szintre, ha benyomódik a gomb, ez után újra meg kell adni a kódot.
+4 féle setup metódusunk van, mindegyik felülírja az eddig tartalmakat, majd elmenti az adott konfigurációhoz szükséges módosításokat. 
+Ez például a Factory Pattern-t követi, a Design Patternek egyik fajtáját.
 
-### Matplotlib Adatelemzés
-Felhasználja a Logger osztály által generált login.csv fájlt. 
+Így például csatolmányként hozzá tudjuk adni a generált matplotlib imaget.
 
-Ezután generál egy grafikont. Ezen a grafikonon láthatók többek között havi bontásban, hogy mennyi érvényes, illetve érvénytelen bejelentkezést regisztráltunk.
-
-![MatplotLib Diagram](/Documentation/images/login_matplotlib.PNG)
-
-Ezután menti a képet, amit az emailező osztály használ fel, (hogy értesítse megfelelő kód után a felhasználót az adatokról) a diagrams mappából veszi a képet.
+Ezután a környezeti változóban beállított értékeket 
+felhasználva elküldi az e-mailt a beállított e-mail címre, esetünkben a sajátunkra.
 
 ### Servo
 Egy kis szervót használunk a pi által generált PWM-el. Ez nekünk csak a széf nyitásához és zárásához kell.
+
+### Szervó forgatás
+
+Argumentumok:
+- pwm-et használunk hozzá
+
+Nyitásnál 90%-ot fordul befelé, ezután ha becsukjuk, 
+egy gomb érzékeli ezt, 
+majd egy zöld LED villan fel, hanghatással együtt,
+ez után újra meg lehet adni a kódot.
+
+Több elképzelés is volt a széf zárására vonatkozóan.
+
+Például, hogy nem ajtót nyitunk, hanem egyfajta "zárat" görgetünk elé.
+
+Ezeket elvetettük, és az elegáns, de nehezebb megoldás mellett döntöttünk.
+
+### Plotter
+
+Matplotlib Adatelemzés
+
+Argumentumok:
+- path -> elérési út a login.csv fájlhoz
+
+Felhasználja a Logger osztály által generált login.csv fájlt.
+
+Ebből generál egy grafikont. Ezen a grafikonon láthatók többek között havi bontásban, hogy mennyi érvényes, illetve érvénytelen bejelentkezést regisztráltunk.
+
+Tervezésnél fontos elem volt, hogy a Raspberry Pi-ra 
+csak 3.4-es matplotlib verzió ELŐTTI verzióra is működő kódot írjunk, 
+mivel nem volt frisebb változat elérhető.
+
+![MatplotLib Diagram](/Documentation/images/login_matplotlib.PNG)
+
+Ezután menti a képet, amit az emailező osztály használ fel,
+(hogy értesítse megfelelő kód után a felhasználót az adatokról)
+
+ Ehhez a /src/diagrams mappából veszi a képet.
 
 ### RFID olvasó
 Adminként tudunk bejelentkezni a széfbe. Használatához az admin kódot, azaz “0000”-t kell beírni.
@@ -203,7 +255,22 @@ Míg sikertelen bejelentkezés esetén a piros LED ad visszajelzést.
 
 ### Button
 
-Ez a gomb bármilyen egyszerű momentary kapcsoló is lehet, nálunk ez mondja el a széfnek hogy az ajtót becsuktuk, és zárja be magát.
+A gomb szerepe az ajtó zárásánál jött elő.
+
+2 féle fő megoldás volt aaz ajtó csukására:
+- automatikus
+- manuális
+
+Automatikus: Kinyitjuk az ajtót, majd X idő elteltével (pl.: 20 mp) lassan visszacsukjuk.
+
+Manuális: Kinyitjuk az ajtót, majd amíg a user be nem csukja, nyitva marad.
+
+Probléma: Hogyan tudjuk, hogy csukva van az ajtó?
+
+Megoldás: Egy gomb elhelyezése az ajtó előtt, melyet ha becsukunk, érzékel a gomb.
+
+Ez a gomb bármilyen egyszerű momentary kapcsoló is lehet,
+nálunk ez mondja el a széfnek hogy az ajtót becsuktuk, és zárja be magát.
 
 ### Buzzer
 
